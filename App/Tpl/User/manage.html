@@ -1,4 +1,3 @@
-
 <layout name="layout"/>
 <div class="row">
     <div class="span12">
@@ -144,18 +143,18 @@
 </div>
 
 <script>
-    $('button[name=editUserBtn]').click(function (e) {
-        var form = $('#editUserDiv').find('form');
-        var btn = e.currentTarget;
-        var id = $(btn).attr('data-id');
-        var username = $(btn).attr('data-username');
-        var auth = $(btn).attr('data-auth');
-        var password = $(btn).attr('data-password');
+$('button[name=editUserBtn]').click(function (e) {
+    var form = $('#editUserDiv').find('form');
+    var btn = e.currentTarget;
+    var id = $(btn).attr('data-id');
+    var username = $(btn).attr('data-username');
+    var auth = $(btn).attr('data-auth');
+    var password = $(btn).attr('data-password');
 
-        form.find('input[name=id]').val(id);
-        form.find('input[name=username]').val(username);
-        form.find('select[name=auth]').val(auth);
-        form.find('input[name=password]').val(password)
-        form.find('input[name=repassword]').val(password)
-    });
+    form.find('input[name=id]').val(id);
+    form.find('input[name=username]').val(username);
+    form.find('select[name=auth]').val(auth);
+    form.find('input[name=password]').val(password)
+    form.find('input[name=repassword]').val(password)
+});
 </script>

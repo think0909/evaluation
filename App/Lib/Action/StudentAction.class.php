@@ -8,52 +8,56 @@
  */
 class StudentAction extends Action
 {
-    public function manage(){
+    public function manage()
+    {
         $student = D('Student');
 
         $data = $student->select();
-        $this->assign('students',$data);
+        $this->assign('students', $data);
         $this->display();
     }
 
-    public function add(){
+    public function add()
+    {
         $student = D('Student');
 
-        if($student->create()){
-            if($student->add()){
-                $this->success('成功添加！',U('Student/manage'));
-            }else{
-                $this->error($student->getDbError(),U('Student/manage'));
+        if ($student->create()) {
+            if ($student->add()) {
+                $this->success('成功添加！', U('Student/manage'));
+            } else {
+                $this->error($student->getDbError(), U('Student/manage'));
             }
-        }else{
-            $this->error($student->getError(),U('Student/manage'));
+        } else {
+            $this->error($student->getError(), U('Student/manage'));
         }
     }
 
-    public function edit(){
+    public function edit()
+    {
         $student = D('Student');
-        if($student->create()){
-            if($student->save()){
-                $this->success('成功编辑！',U('Student/manage'));
-            }else{
-                $this->error($student->getDbError(),U('Student/manage'));
+        if ($student->create()) {
+            if ($student->save()) {
+                $this->success('成功编辑！', U('Student/manage'));
+            } else {
+                $this->error($student->getDbError(), U('Student/manage'));
             }
-        }else{
-            $this->error($student->getError(),U('Student/manage'));
+        } else {
+            $this->error($student->getError(), U('Student/manage'));
         }
     }
 
-    public function del(){
+    public function del()
+    {
         $student = D('Student');
         $id = $this->_get('id');
-        if($id && $student->find($id)){
-            if($student->where(array('id'=>$id))->delete()){
-                $this->success('成功删除！',U('Student/manage'));
-            }else{
-                $this->error($student->getDbError(),U('Student/manage'));
+        if ($id && $student->find($id)) {
+            if ($student->where(array('id' => $id))->delete()) {
+                $this->success('成功删除！', U('Student/manage'));
+            } else {
+                $this->error($student->getDbError(), U('Student/manage'));
             }
-        }else{
-            $this->error('用户名不存在',U('Student/manage'));
+        } else {
+            $this->error('用户名不存在', U('Student/manage'));
         }
     }
 }

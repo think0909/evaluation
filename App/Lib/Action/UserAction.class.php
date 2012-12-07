@@ -8,52 +8,56 @@
  */
 class UserAction extends Action
 {
-    public function manage(){
+    public function manage()
+    {
         $user = D('User');
 
         $data = $user->select();
-        $this->assign('users',$data);
+        $this->assign('users', $data);
         $this->display();
     }
 
-    public function add(){
+    public function add()
+    {
         $user = D('User');
 
-        if($user->create()){
-            if($user->add()){
-                $this->success('成功添加！',U('User/manage'));
-            }else{
-                $this->error($user->getDbError(),U('User/manage'));
+        if ($user->create()) {
+            if ($user->add()) {
+                $this->success('成功添加！', U('User/manage'));
+            } else {
+                $this->error($user->getDbError(), U('User/manage'));
             }
-        }else{
-            $this->error($user->getError(),U('User/manage'));
+        } else {
+            $this->error($user->getError(), U('User/manage'));
         }
     }
 
-    public function edit(){
+    public function edit()
+    {
         $user = D('User');
-        if($user->create()){
-            if($user->save()){
-                $this->success('成功编辑！',U('User/manage'));
-            }else{
-                $this->error($user->getDbError(),U('User/manage'));
+        if ($user->create()) {
+            if ($user->save()) {
+                $this->success('成功编辑！', U('User/manage'));
+            } else {
+                $this->error($user->getDbError(), U('User/manage'));
             }
-        }else{
-            $this->error($user->getError(),U('User/manage'));
+        } else {
+            $this->error($user->getError(), U('User/manage'));
         }
     }
 
-    public function del(){
+    public function del()
+    {
         $user = D('User');
         $id = $this->_get('id');
-        if($id && $user->find($id)){
-               if($user->where(array('id'=>$id))->delete()){
-                   $this->success('成功删除！',U('User/manage'));
-               }else{
-                   $this->error($user->getDbError(),U('User/manage'));
-               }
-        }else{
-            $this->error('用户名不存在',U('User/manage'));
+        if ($id && $user->find($id)) {
+            if ($user->where(array('id' => $id))->delete()) {
+                $this->success('成功删除！', U('User/manage'));
+            } else {
+                $this->error($user->getDbError(), U('User/manage'));
+            }
+        } else {
+            $this->error('用户名不存在', U('User/manage'));
         }
     }
 }

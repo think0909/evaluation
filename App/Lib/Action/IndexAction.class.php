@@ -1,32 +1,34 @@
 <?php
 // 本类由系统自动生成，仅供测试用途
-class IndexAction extends Action {
-    public function index(){
-    $model = M('User');
-    dump($model->getDbFields());
-    $data = array();
-    $data['username']='chengs';
-    $data['password']=md5(time());
+class IndexAction extends Action
+{
+    public function index()
+    {
+        $model = M('User');
+        dump($model->getDbFields());
+        $data = array();
+        $data['username'] = 'chengs';
+        $data['password'] = md5(time());
 
-    $model->create($data);
-    $model->add();
+        $model->create($data);
+        $model->add();
 
-    dump($model->select());
-}
+        dump($model->select());
+    }
 
 
-
-    public function take(){
+    public function take()
+    {
         $model = D('User');
 
-        if($model->create()){
-            if($model->add()){
+        if ($model->create()) {
+            if ($model->add()) {
                 echo 'ok';
 
-            }else{
+            } else {
                 echo $model->getDbError();
             }
-        }else{
+        } else {
             dump($model->getError());
         }
     }

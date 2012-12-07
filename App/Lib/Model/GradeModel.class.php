@@ -9,8 +9,8 @@
 class GradeModel extends Model
 {
     protected $_validate = array(
-        array('itemid','require','请输入项目编号'),
-        array('studentid','require','请输入学号'),
+        array('itemid', 'require', '请输入项目编号'),
+        array('studentid', 'require', '请输入学号'),
 
     );
 

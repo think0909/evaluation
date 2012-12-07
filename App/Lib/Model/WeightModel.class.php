@@ -9,10 +9,10 @@
 class WeightModel extends Model
 {
     protected $_validate = array(
-        array('fromid','require','请输入From_id'),
-        array('toid','require','请输入To_id'),
-        array('min','require','请输入最小权值'),
-        array('normal','require','请输入最可能权值'),
-        array('max','require','请输入最大权值')
+        array('fromid', 'require', '请输入From_id'),
+        array('toid', 'require', '请输入To_id'),
+        array('min', 'require', '请输入最小权值'),
+        array('normal', 'require', '请输入最可能权值'),
+        array('max', 'require', '请输入最大权值')
     );
 }

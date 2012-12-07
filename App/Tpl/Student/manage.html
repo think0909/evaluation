@@ -147,17 +147,17 @@
 
 
 <script>
-    $('button[name=editStudentBtn]').click(function (e) {
-        var form = $('#editStudentDiv').find('form');
-        var btn = e.currentTarget;
-        var stu_id = $(btn).attr('data-id');
-        var stu_name = $(btn).attr('data-name');
-        var stu_gender = $(btn).attr('data-gender');
-        var stu_class = $(btn).attr('data-class');
+$('button[name=editStudentBtn]').click(function (e) {
+    var form = $('#editStudentDiv').find('form');
+    var btn = e.currentTarget;
+    var stu_id = $(btn).attr('data-id');
+    var stu_name = $(btn).attr('data-name');
+    var stu_gender = $(btn).attr('data-gender');
+    var stu_class = $(btn).attr('data-class');
 
-        form.find('input[name=id]').val(stu_id);
-        form.find('input[name=name]').val(stu_name);
-        form.find('select[name=class]').val(stu_class);
-        form.find('input[name=gender]').val(stu_gender)
-    });
+    form.find('input[name=id]').val(stu_id);
+    form.find('input[name=name]').val(stu_name);
+    form.find('select[name=class]').val(stu_class);
+    form.find('input[name=gender]').val(stu_gender)
+});
 </script>

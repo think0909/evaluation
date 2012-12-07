@@ -8,7 +8,8 @@
  */
 class GradeAction extends Action
 {
-    public function manage(){
+    public function manage()
+    {
         $grade = D("Grade");
         $item = D("Item");
 
