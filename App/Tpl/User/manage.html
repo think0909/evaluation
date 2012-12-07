@@ -50,8 +50,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>添加用户</h3>
     </div>
-    <form method="post" class="form-horizontal" action="{:U('User/add')}">
-        <div class="modal-body">
+    <div class="modal-body">
+        <form method="post" id="userAddForm" class="form-horizontal" action="{:U('User/add')}">
             <div class="control-group">
                 <label class="control-label">用户名</label>
 
@@ -84,12 +84,12 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">提交</button>
-            <button type="reset" class="btn btn">重填</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="addSubmitBtn" class="btn btn-danger">提交</button>
+        <button type="reset" id="addResetBtn" class="btn">重填</button>
+    </div>
 </div>
 
 <div id="editUserDiv" class="modal hide">
@@ -97,10 +97,10 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>编辑用户</h3>
     </div>
-    <form method="post" class="form-horizontal" action="{:U('User/edit')}">
-        <input type="hidden" name="id">
+    <div class="modal-body">
+        <form method="post" class="form-horizontal" id="userEditForm" action="{:U('User/edit')}">
+            <input type="hidden" name="id">
 
-        <div class="modal-body">
             <div class="control-group">
                 <label class="control-label">用户名</label>
 
@@ -134,15 +134,15 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">提交</button>
-            <button type="reset" class="btn btn">重填</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="editSubmitBtn" class="btn btn-danger">提交</button>
+    </div>
 </div>
 
-<script>
+<script type="text/javascript">
+//edit
 $('button[name=editUserBtn]').click(function (e) {
     var form = $('#editUserDiv').find('form');
     var btn = e.currentTarget;
@@ -156,5 +156,15 @@ $('button[name=editUserBtn]').click(function (e) {
     form.find('select[name=auth]').val(auth);
     form.find('input[name=password]').val(password)
     form.find('input[name=repassword]').val(password)
+});
+//submit
+$('#editSubmitBtn').click(function () {
+    $('#userEditForm').submit();
+});
+$('#addSubmitBtn').click(function () {
+    $('#userAddForm').submit();
+});
+$('#addResetBtn').click(function () {
+    $('#userAddForm')[0].reset();
 });
 </script>

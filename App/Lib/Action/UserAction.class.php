@@ -39,10 +39,10 @@ class UserAction extends Action
             if ($user->save()) {
                 $this->success('成功编辑！', U('User/manage'));
             } else {
-                $this->error($user->getDbError(), U('User/manage'));
+                $this->error('编辑失败!' . $user->getDbError(), U('User/manage'));
             }
         } else {
-            $this->error($user->getError(), U('User/manage'));
+            $this->error('编辑失败！' . $user->getError(), U('User/manage'));
         }
     }
 

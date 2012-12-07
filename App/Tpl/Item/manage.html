@@ -1,0 +1,209 @@
+<layout name="layout"/>
+<div>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#itemAddDiv"><i class="icon-plus"></i>增加项目</button>
+</div>
+<div>
+    <h4>一级项目</h4>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <td class="span1">ID</td>
+        <td class="span3">名称</td>
+        <td>描述</td>
+        <td class="span1">权重</td>
+        <td class="span2">功能</td>
+        </thead>
+        <tbody>
+        <foreach name="level1" item="item">
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.title}</td>
+                <td>{$item.description}</td>
+                <td>{$item.weight}</td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-info" name="itemEditBtn" data-id="{$item.id}" data-title="{$item.title}"
+                                data-description="{$item.description}" data-parentid="{$item.parentid}"
+                                data-full="{$item.full}" data-toggle="modal"
+                                data-target="#itemEditDiv">
+                            <i class="icon-edit"></i>编辑
+                        </button>
+                        <a rel="button" role="button" href="{:U('Item/delete','id='.$item['id'])}"
+                           class="btn btn-danger" name="itemDelBtn" data-id='{$item.id}'>
+                            <i class="icon-remove"></i>删除
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>二级项目</h4>
+    <foreach name='level2' item='levelitem'>
+        <p>{$levelitem.title}</p>
+        <table class="table-bordered table table-hover">
+            <thead>
+            <td class="span1">ID</td>
+            <td class="span3">名称</td>
+            <td>描述</td>
+            <td class="span1">分值</td>
+            <td class="span1">权重</td>
+            <td class="span2">功能</td>
+            </thead>
+            <tbody>
+            <foreach name='levelitem.data' item="item">
+                <tr>
+                    <td>{$item.id}</td>
+                    <td>{$item.title}</td>
+                    <td>{$item.description}</td>
+                    <td>{$item.full}</td>
+                    <td>{$item.weight}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-info" name="itemEditBtn" data-id="{$item.id}"
+                                    data-title="{$item.title}" data-description="{$item.description}"
+                                    data-full="{$item.full}" data-parentid="{$item.parentid}" data-toggle="modal"
+                                    data-target="#itemEditDiv">
+                                <i class="icon-edit"></i>编辑
+                            </button>
+                            <a rel="button" role="button" href="{:U('Item/delete','id='.$item['id'])}"
+                               class="btn btn-danger" name="itemDelBtn" data-id='{$item.id}'>
+                                <i class="icon-remove"></i>删除
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </foreach>
+</div>
+<div id="itemAddDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>增加项目</h3>
+    </div>
+    <div class="modal-body">
+        <form id="itemAddForm" method="post" class="form-horizontal" action="{:U('Item/add')}">
+            <div class="control-group">
+                <label class="control-label">标题</label>
+
+                <div class="controls">
+                    <input type="text" name="title">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">描述</label>
+
+                <div class="controls">
+                    <textarea name="description"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">分值</label>
+
+                <div class="controls">
+                    <input type="number" name="full" value="100">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">父级项目</label>
+
+                <div class="controls">
+                    <select name="parentid">
+                        <option value="0">--无--</option>
+                        <foreach name="level1" item="item">
+                            <option value="{$item.id}">{$item.title}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="addSubmitBtn" class="btn btn-danger">提交</button>
+        <button type="reset" id="addResetBtn" class="btn btn">重填</button>
+    </div>
+</div>
+<div id="itemEditDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>编辑项目</h3>
+    </div>
+    <div class="modal-body">
+        <form id="itemEditForm" method="post" class="form-horizontal" action="{:U('Item/edit')}">
+            <input type="hidden" name="id">
+
+            <div class="control-group">
+                <label class="control-label">标题</label>
+
+                <div class="controls">
+                    <input type="text" name="title">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">描述</label>
+
+                <div class="controls">
+                    <textarea name="description"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">分值</label>
+
+                <div class="controls">
+                    <input type="number" name="full" value="100">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">父级项目</label>
+
+                <div class="controls">
+                    <select name="parentid">
+                        <option value="0">--无--</option>
+                        <foreach name="level1" item="item">
+                            <option value="{$item.id}">{$item.title}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="editSubmitBtn" class="btn btn-danger">提交</button>
+    </div>
+</div>
+<script type="text/javascript">
+jQuery(function ($) {
+    //bind delete buttons
+    $('a[name=itemDelBtn]').click(function (e) {
+        if (window.confirm('确认删除?')) {
+            return true;
+        } else {
+            e.preventDefault();
+            return false;
+        }
+    })
+    //add
+    $('#addSubmitBtn').click(function () {
+        $('#itemAddForm').submit();
+    });
+    $('#addResetBtn').click(function () {
+        $('#itemAddForm')[0].reset();
+    });
+    //edit
+    $('button[name=itemEditBtn]').click(function (e) {
+        var me = this, btn = e.currentTarget, form = $('#itemEditForm');
+        var id = $(btn).attr('data-id'), title = $(btn).attr('data-title'), description = $('btn').attr('data-description'), full = $(btn).attr('data-full'), parentid = $(btn).attr('data-parentid');
+        form.find('input[name=id]').val(id);
+        form.find('input[name=full]').val(full);
+        form.find('input[name=title]').val(title);
+        form.find('textarea[name=description]').val(description);
+        form.find('select[name=parentid]').val(parentid);
+    });
+    $('#editSubmitBtn').click(function () {
+        $('#itemEditForm').submit();
+    });
+});
+</script>

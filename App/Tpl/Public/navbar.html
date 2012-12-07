@@ -4,7 +4,17 @@
         <a class="brand" href="#">国防生综合素质测评管理系统</a>
         <ul class="nav">
             <li><a href="{:U('User/manage')}">用户管理</a></li>
-            <li><a href="#">项目管理</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">项目管理<b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="{:U('Item/manage')}"><i class="icon-list"></i>项目列表</a>
+                    </li>
+                    <li>
+                        <a href="{:U('Item/weight')}"><i class="icon-edit"></i>权重编辑</a>
+                    </li>
+                </ul>
+            </li>
             <li><a href="{:U('Student/manage')}">学生管理</a></li>
             <li><a href="{:U('Grade/manage')}">成绩管理</a></li>
         </ul>
