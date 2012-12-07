@@ -4,16 +4,7 @@ class IndexAction extends Action
 {
     public function index()
     {
-        $model = M('User');
-        dump($model->getDbFields());
-        $data = array();
-        $data['username'] = 'chengs';
-        $data['password'] = md5(time());
-
-        $model->create($data);
-        $model->add();
-
-        dump($model->select());
+        $this->display('main.html');
     }
 
 
