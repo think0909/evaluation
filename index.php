@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-define('APP_NAME','evaluate');
+define('APP_NAME','evaluate111');
 define('APP_PATH','./APP/');
 define('APP_DEBUG', true);
 require './ThinkPHP/ThinkPHP.php';
