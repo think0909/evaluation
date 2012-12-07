@@ -13,7 +13,23 @@ class GradeAction extends Action
         $grade = D("Grade");
         $item = D("Item");
 
-        $items = $item->where('level = 2')->select('title');
-        $data = $grade->select();
+        $items = $item->distinct('title')->where('level=2')->order('title')->select();
+        $this->assign('items', $items);
+
+        $grades = $grade->select();
+        $this->assign('grades', $grades);
+
+        $ids = $grade->distinct('studentid')->order('studentid')->select();
+        $this->assign("ids", $ids);
+
+
+        foreach ($ids as $id) {
+            $score[$id['studentid']] = $grade->where(array('studentid' => $id['studentid']))->order('itemid asc')->select();
+        }
+        $this->assign("score", $score);
+
+
+        $this->display();
     }
+
 }

@@ -5,20 +5,25 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <td class="span2">姓名</td>
                 <td class="span2">学号</td>
-                <td class="span2">班级</td>
-                <td class="span1">性别</td>
+                <foreach name="items" item="item">
+                    <td class="span1">{$item.title}</td>
+                </foreach>
+                <td class="span1">总分</td>
                 <td class="span2">功能</td>
             </tr>
             </thead>
             <tbody>
-            <foreach name="students" item="stu">
+            <foreach name="ids" item="id">
                 <tr>
-                    <td>{$stu.name}</td>
-                    <td>{$stu.id}</td>
-                    <td>{$stu.class}</td>
-                    <td>{$stu.gender}</td>
+                    <td>{$id.studentid}</td>
+
+                    <foreach name="score[$id['studentid']]" item="item">
+                        <td>{$item.point}</td>
+
+
+                    </foreach>
+                    <td></td>
                     <td>
                         <div class="btn-group">
                             <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
