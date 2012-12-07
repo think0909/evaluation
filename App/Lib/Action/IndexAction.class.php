@@ -6,21 +6,4 @@ class IndexAction extends Action
     {
         $this->display('main.html');
     }
-
-
-    public function take()
-    {
-        $model = D('User');
-
-        if ($model->create()) {
-            if ($model->add()) {
-                echo 'ok';
-
-            } else {
-                echo $model->getDbError();
-            }
-        } else {
-            dump($model->getError());
-        }
-    }
 }
