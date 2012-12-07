@@ -61,4 +61,55 @@ class ItemAction extends Action
         }
 
     }
+
+    public function add()
+    {
+        $data = array();
+
+        $data['title'] = $this->_post('title');
+        $data['description'] = $this->_post('description');
+        $data['full'] = $this->_post('full');
+        $data['parentid'] = $this->_post('parentid');
+        $data['level'] = ($data['parentid'] == 0) ? 1 : 2;
+
+        $model = D('Item');
+
+        if ($model->create($data)) {
+            if ($model->add()) {
+                $this->success('添加成功！', U('Item/manage'));
+            } else {
+                $this->error('添加失败！' . $model->getDbError(), U('Item/manage'));
+            }
+        } else {
+            $this->error('添加失败！' . $model->getError(), U('Item/manage'));
+        }
+    }
+
+    public function edit()
+    {
+        $data = array();
+
+        $data['id'] = $this->_post('id');
+        $data['title'] = $this->_post('title');
+        $data['description'] = $this->_post('description');
+        $data['full'] = $this->_post('full');
+        $data['parentid'] = $this->_post('parentid');
+        $data['level'] = ($data['parentid'] == 0) ? 1 : 2;
+
+        $model = D('Item');
+
+        if (!$data['id']) {
+            $this->error('编辑失败！ID不存在', U('Item/manage'));
+        }
+
+        if ($model->create($data)) {
+            if ($model->save()) {
+                $this->success('编辑成功！', U('Item/manage'));
+            } else {
+                $this->error('编辑失败！' . $model->getDbError(), U('Item/manage'));
+            }
+        } else {
+            $this->error('编辑失败！' . $model->getError(), U('Item/manage'));
+        }
+    }
 }
