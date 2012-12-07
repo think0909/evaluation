@@ -1,0 +1,161 @@
+
+<layout name="layout"/>
+<div class="row">
+    <div class="span12">
+        <button class="btn btn-primary" data-toggle="modal" data-target='#addUserDiv'>
+            <i class="icon-plus"></i>
+            添加新用户
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <h4>用户列表</h4>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td class="span1">ID</td>
+                <td>用户名</td>
+                <td class="span1">等级</td>
+                <td class="span2">功能</td>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="users" item="user">
+                <tr>
+                    <td>{$user.id}</td>
+                    <td>{$user.username}</td>
+                    <td>{$user.auth}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button name="editUserBtn" class="btn btn-info" data-toggle="modal"
+                                    data-password="{$user.password}" data-auth={$user.auth}
+                                    data-username='{$user.username}' data-target='#editUserDiv' data-id={$user.id}>编辑
+                            </button>
+                            <a href="{:U('User/del','id='.$user['id'])}" role="button" class="btn btn-danger">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+    <div class="span4">
+        <div class="well">
+            我是说明
+        </div>
+    </div>
+</div>
+<div id="addUserDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>添加用户</h3>
+    </div>
+    <form method="post" class="form-horizontal" action="{:U('User/add')}">
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label">用户名</label>
+
+                <div class="controls">
+                    <input type="text" name="username">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">密码</label>
+
+                <div class="controls">
+                    <input type="password" name="password">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">确认密码</label>
+
+                <div class="controls">
+                    <input type="password" name="repassword">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">等级</label>
+
+                <div class="controls">
+                    <select name='auth'>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">提交</button>
+            <button type="reset" class="btn btn">重填</button>
+        </div>
+    </form>
+</div>
+
+<div id="editUserDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>编辑用户</h3>
+    </div>
+    <form method="post" class="form-horizontal" action="{:U('User/edit')}">
+        <input type="hidden" name="id">
+
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label">用户名</label>
+
+                <div class="controls">
+                    <input type="text" name="username">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">密码</label>
+
+                <div class="controls">
+                    <input type="password" name="password">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">确认密码</label>
+
+                <div class="controls">
+                    <input type="password" name="repassword">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">等级</label>
+
+                <div class="controls">
+                    <select name='auth'>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">提交</button>
+            <button type="reset" class="btn btn">重填</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $('button[name=editUserBtn]').click(function (e) {
+        var form = $('#editUserDiv').find('form');
+        var btn = e.currentTarget;
+        var id = $(btn).attr('data-id');
+        var username = $(btn).attr('data-username');
+        var auth = $(btn).attr('data-auth');
+        var password = $(btn).attr('data-password');
+
+        form.find('input[name=id]').val(id);
+        form.find('input[name=username]').val(username);
+        form.find('select[name=auth]').val(auth);
+        form.find('input[name=password]').val(password)
+        form.find('input[name=repassword]').val(password)
+    });
+</script>

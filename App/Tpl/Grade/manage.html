@@ -1,0 +1,41 @@
+<layout name="layout"/>
+<div class="row">
+    <div class="span8">
+        <h4>查询结果</h4>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td class="span2">姓名</td>
+                <td class="span2">学号</td>
+                <td class="span2">班级</td>
+                <td class="span1">性别</td>
+                <td class="span2">功能</td>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="students" item="stu">
+                <tr>
+                    <td>{$stu.name}</td>
+                    <td>{$stu.id}</td>
+                    <td>{$stu.class}</td>
+                    <td>{$stu.gender}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
+                                    data-class="{$stu.class}" data-gender={$stu.gender}
+                                    data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
+                            </button>
+                            <a href="{:U('Student/del','id='.$stu['id'])}" role="button" class="btn btn-danger">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+    <div class="span4">
+        <div class="well">
+            我是说明
+        </div>
+    </div>
+</div>

@@ -1,0 +1,163 @@
+<layout name="layout"/>
+<div class="row">
+    <div class="span12">
+        <button class="btn btn-primary" data-toggle="modal" data-target='#addStudentDiv'>
+            <i class="icon-plus"></i>
+            添加学生信息
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <h4>查询结果</h4>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td class="span2">姓名</td>
+                <td class="span2">学号</td>
+                <td class="span2">班级</td>
+                <td class="span1">性别</td>
+                <td class="span2">功能</td>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="students" item="stu">
+                <tr>
+                    <td>{$stu.name}</td>
+                    <td>{$stu.id}</td>
+                    <td>{$stu.class}</td>
+                    <td>{$stu.gender}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
+                                    data-class="{$stu.class}" data-gender={$stu.gender}
+                                    data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
+                            </button>
+                            <a href="{:U('Student/del','id='.$stu['id'])}" role="button" class="btn btn-danger">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+    <div class="span4">
+        <div class="well">
+            我是说明
+        </div>
+    </div>
+</div>
+
+<div id="addStudentDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>添加学生信息</h3>
+    </div>
+    <form method="post" class="form-horizontal" action="{:U('Student/add')}">
+        <input type="hidden" name="id">
+
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label">姓名</label>
+
+                <div class="controls">
+                    <input type="text" name="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">学号</label>
+
+                <div class="controls">
+                    <input type="text" name="id">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">班级</label>
+
+                <div class="controls">
+                    <input type="text" name="class">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">性别</label>
+
+                <div class="controls">
+                    <select name='auth'>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">提交</button>
+            <button type="reset" class="btn btn">重填</button>
+        </div>
+    </form>
+</div>
+
+
+<div id="editStudentDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>编辑学生信息</h3>
+    </div>
+    <form method="post" class="form-horizontal" action="{:U('Student/edit')}">
+        <input type="hidden" name="id">
+
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label">姓名</label>
+
+                <div class="controls">
+                    <input type="text" name="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">学号</label>
+
+                <div class="controls">
+                    <input type="text" name="id">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">班级</label>
+
+                <div class="controls">
+                    <input type="text" name="class">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">性别</label>
+
+                <div class="controls">
+                    <select name='auth'>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">提交</button>
+            <button type="reset" class="btn btn">重填</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $('button[name=editStudentBtn]').click(function (e) {
+        var form = $('#editStudentDiv').find('form');
+        var btn = e.currentTarget;
+        var stu_id = $(btn).attr('data-id');
+        var stu_name = $(btn).attr('data-name');
+        var stu_gender = $(btn).attr('data-gender');
+        var stu_class = $(btn).attr('data-class');
+
+        form.find('input[name=id]').val(stu_id);
+        form.find('input[name=name]').val(stu_name);
+        form.find('select[name=class]').val(stu_class);
+        form.find('input[name=gender]').val(stu_gender)
+    });
+</script>
