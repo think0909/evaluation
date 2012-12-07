@@ -4,6 +4,6 @@ class IndexAction extends Action
 {
     public function index()
     {
-        $this->display('main.html');
+        $this->display('main');
     }
 }
