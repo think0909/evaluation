@@ -1,0 +1,84 @@
+<layout name="layout"/>
+<div>
+    <button class="btn btn-primary"><i class="icon-plus"></i>增加项目</button>
+</div>
+<div>
+    <h4>一级项目</h4>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <td class="span1">ID</td>
+        <td class="span3">名称</td>
+        <td>描述</td>
+        <td class="span1">权重</td>
+        <td class="span2">功能</td>
+        </thead>
+        <tbody>
+        <foreach name="level1" item="item">
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.title}</td>
+                <td>{$item.description}</td>
+                <td>{$item.weight}</td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-info" name="itemEditBtn"><i class="icon-edit"></i>编辑</button>
+                        <a rel="button" role="button" href="{:U('Item/delete','id='.$item['id'])}"
+                           class="btn btn-danger" name="itemDelBtn" data-id='{$item.id}'>
+                            <i class="icon-remove"></i>删除
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>二级项目</h4>
+    <foreach name='level2' item='levelitem'>
+        <p>{$levelitem.title}</p>
+        <table class="table-bordered table table-hover">
+            <thead>
+            <td class="span1">ID</td>
+            <td class="span3">名称</td>
+            <td>描述</td>
+            <td class="span1">分值</td>
+            <td class="span1">权重</td>
+            <td class="span2">功能</td>
+            </thead>
+            <tbody>
+            <foreach name='levelitem.data' item="item">
+                <tr>
+                    <td>{$item.id}</td>
+                    <td>{$item.title}</td>
+                    <td>{$item.description}</td>
+                    <td>{$item.full}</td>
+                    <td>{$item.weight}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-info"><i class="icon-edit"></i>编辑</button>
+                            <a rel="button" role="button" href="{:U('Item/delete','id='.$item['id'])}"
+                               class="btn btn-danger" name="itemDelBtn" data-id='{$item.id}'>
+                                <i class="icon-remove"></i>删除
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </foreach>
+</div>
+<script type="text/javascript">
+jQuery(function ($) {
+    //bind delete buttons
+    $('a[name=itemDelBtn]').click(function (e) {
+        if (window.confirm('确认删除?')) {
+            return true;
+        } else {
+            e.preventDefault();
+            return false;
+        }
+    })
+});
+</script>
