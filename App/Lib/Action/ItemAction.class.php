@@ -26,6 +26,63 @@ class ItemAction extends Action
         $this->display();
     }
 
+    public function weight()
+    {
+        $model = D('Item');
+
+        $level1 = $model->where(array('level' => 1))->order('id asc')->select();
+        $this->assign('level1', $level1);
+        $this->assign('level1Matrix', $this->getItemMatrix($level1));
+
+        $level2 = array();
+        foreach ($level1 as $item) {
+            $items = $model->where(array('level' => 2, 'parentid' => $item['id']))->order('id asc')->select();
+            $matrix = $this->getItemMatrix($items);
+            $level2[] = array('title' => $item['title'], 'level' => $items, 'matrix' => $matrix);
+        }
+        $this->assign('level2', $level2);
+
+        $this->display();
+    }
+
+    public function getItemMatrix($searchResult)
+    {
+        $result = array();
+        foreach ($searchResult as $item) {
+            $data = array('id' => $item['id'], 'title' => $item['title']);
+            $temp = array();
+            foreach ($searchResult as $item1) {
+                $temp1 = $this->getWeightItem($item['id'], $item1['id']);
+                $temp1['fromid'] = $item['id'];
+                $temp1['toid'] = $item1['id'];
+                $temp[] = $temp1;
+            }
+            $data['data'] = $temp;
+            $result[] = $data;
+        }
+        return $result;
+    }
+
+    public function getWeightItem($from, $to)
+    {
+        if ($from < $to) {
+            $model = D('Weight');
+            $data = $model->where(array('fromid' => $from, 'toid' => $to))->find();
+            if ($data) {
+                return array('max' => $data['max'], 'min' => $data['min'], 'normal' => $data['normal']);
+            } else {
+                return array('max' => 1, 'min' => 1, 'normal' => 1);
+            }
+
+        } else if ($from == $to) {
+            return array('max' => 1, 'min' => 1, 'normal' => 1);
+        } else {
+            //$from > $to
+            $temp = $this->getWeightItem($to, $from);
+            return array('max' => (1 / $temp['min']), 'min' => (1 / $temp['max']), 'normal' => (1 / $temp['normal']));
+        }
+    }
+
     //删除项目
     public function delete()
     {
@@ -60,6 +117,26 @@ class ItemAction extends Action
             $this->error('删除失败！ID非法', U('Item/manage'));
         }
 
+    }
+
+    public function editWeight()
+    {
+        $model = D('Weight');
+        if ($model->create()) {
+            $weight = M('Weight');
+            $condition = array('fromid' => $model->fromid, 'toid' => $model->toid);
+            if ($weight->where($condition)->find()) {
+                $weight->where($condition)->delete();
+            }
+
+            if ($model->add()) {
+                $this->success('编辑成功！', U('Item/weight'));
+            } else {
+                $this->error('编辑失败！' . $model->getDbError(), U('Item/weight'));
+            }
+        } else {
+            $this->error('编辑失败！' . $model->getError(), U('Item/weight'));
+        }
     }
 
     public function add()
