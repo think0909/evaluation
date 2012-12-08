@@ -123,10 +123,12 @@ class ItemAction extends Action
     {
         $model = D('Weight');
         if ($model->create()) {
-            dump($model);
-            if ($model->find()) {
-                $model->delete();
+            $weight = M('Weight');
+            $condition = array('fromid' => $model->fromid, 'toid' => $model->toid);
+            if ($weight->where($condition)->find()) {
+                $weight->where($condition)->delete();
             }
+
             if ($model->add()) {
                 $this->success('编辑成功！', U('Item/weight'));
             } else {
