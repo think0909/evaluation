@@ -1,46 +1,38 @@
 <layout name="layout"/>
 <div class="row">
-    <div class="span8">
+    <div class="span12">
         <h4>查询结果</h4>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <td class="span2">学号</td>
-                <foreach name="items" item="item">
+                <td class="span1">学号</td>
+                <foreach name="items1" item="item">
                     <td class="span1">{$item.title}</td>
                 </foreach>
                 <td class="span1">总分</td>
-                <td class="span2">功能</td>
+                <td class="span1">功能</td>
             </tr>
             </thead>
             <tbody>
-            <foreach name="ids" item="id">
+            <foreach name="score1" item="items" key='id'>
                 <tr>
-                    <td>{$id.studentid}</td>
-
-                    <foreach name="score[$id['studentid']]" item="item">
-                        <td>{$item.point}</td>
-
-
+                    <td>{$id}</td>
+                    <foreach name="items" item="score1">
+                        <td>{$score1.point}</td>
                     </foreach>
                     <td></td>
                     <td>
-                        <div class="btn-group">
-                            <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
-                                    data-class="{$stu.class}" data-gender={$stu.gender}
-                                    data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
-                            </button>
-                            <a href="{:U('Student/del','id='.$stu['id'])}" role="button" class="btn btn-danger">删除</a>
-                        </div>
+                        <a href="{:U('Grade/detail','id='.$id)}" role="button" class="btn btn-info">详细信息</a>
                     </td>
                 </tr>
             </foreach>
             </tbody>
         </table>
     </div>
-    <div class="span4">
-        <div class="well">
-            我是说明
-        </div>
-    </div>
 </div>
+
+
+
+
+
+

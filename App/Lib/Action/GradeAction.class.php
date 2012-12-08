@@ -13,23 +13,42 @@ class GradeAction extends Action
         $grade = D("Grade");
         $item = D("Item");
 
-        $items = $item->distinct('title')->where('level=2')->order('title')->select();
-        $this->assign('items', $items);
+        $items1 = $item->distinct(true)->field('title')->where('level=1')->order('title')->select();
+        $this->assign('items1', $items1);
 
-        $grades = $grade->select();
-        $this->assign('grades', $grades);
 
-        $ids = $grade->distinct('studentid')->order('studentid')->select();
+        $itemids1 = $item->distinct(true)->field('id')->where('level=1')->order('id asc')->select();
+        foreach ($itemids1 as $itemid1) {
+            $id1[] = $itemid1['id'];
+        }
+
+        $ids = $grade->distinct(true)->field('studentid')->order('studentid')->select();
         $this->assign("ids", $ids);
 
-
         foreach ($ids as $id) {
-            $score[$id['studentid']] = $grade->where(array('studentid' => $id['studentid']))->order('itemid asc')->select();
+            $score1[$id[studentid]] = $grade->where(array('studentid' => $id[studentid], 'itemid' => array('in', $id1)))->order('itemid asc')->select();
         }
-        $this->assign("score", $score);
-
+        $this->assign("score1", $score1);
 
         $this->display();
     }
 
+    public function detail()
+    {
+        $grade = D("Grade");
+        $item = D("Item");
+        $items2 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
+        $this->assign('items2', $items2);
+
+        $itemids2 = $item->distinct(true)->field('id')->where('level=2')->order('id asc')->select();
+        foreach ($itemids2 as $itemid2) {
+            $id2[] = $itemid2['id'];
+        }
+        $stu_id = $this->_get('id');
+        $this->assign("stu_id", $stu_id);
+
+        $score2 = $grade->where(array('studentid' => $stu_id, 'itemid' => array('in', $id2)))->order('itemid asc')->select();
+        $this->assign("score2", $score2);
+        $this->display();
+    }
 }
