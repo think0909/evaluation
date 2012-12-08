@@ -31,24 +31,36 @@ class ItemAction extends Action
         $model = D('Item');
 
         $level1 = $model->where(array('level' => 1))->order('id asc')->select();
-        $level1Matrix = array();
+        $this->assign('level1', $level1);
+        $this->assign('level1Matrix', $this->getItemMatrix($level1));
+
+        $level2 = array();
         foreach ($level1 as $item) {
+            $items = $model->where(array('level' => 2, 'parentid' => $item['id']))->order('id asc')->select();
+            $matrix = $this->getItemMatrix($items);
+            $level2[] = array('title' => $item['title'], 'level' => $items, 'matrix' => $matrix);
+        }
+        $this->assign('level2', $level2);
+
+        $this->display();
+    }
+
+    public function getItemMatrix($searchResult)
+    {
+        $result = array();
+        foreach ($searchResult as $item) {
             $data = array('id' => $item['id'], 'title' => $item['title']);
             $temp = array();
-            foreach ($level1 as $item1) {
+            foreach ($searchResult as $item1) {
                 $temp1 = $this->getWeightItem($item['id'], $item1['id']);
                 $temp1['fromid'] = $item['id'];
                 $temp1['toid'] = $item1['id'];
                 $temp[] = $temp1;
             }
             $data['data'] = $temp;
-            $level1Matrix[] = $data;
+            $result[] = $data;
         }
-
-        $this->assign('level1', $level1);
-        $this->assign('level1Matrix', $level1Matrix);
-
-        $this->display();
+        return $result;
     }
 
     public function getWeightItem($from, $to)

@@ -18,8 +18,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <td></td>
-            <td class="span2"></td>
+            <td class="span1">ID</td>
+            <td class="span2">标题</td>
             <foreach name="level1" item="item">
                 <td>{$item.id}</td>
             </foreach>
@@ -50,6 +50,41 @@
 </div>
 <div>
     <h4>二级项目</h4>
+    <foreach name="level2" item="sublevel">
+        <p>{$sublevel.title}</p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td class="span1">ID</td>
+                <td class="span2">标题</td>
+                <foreach name="sublevel.level" item="item">
+                    <td>{$item.id}</td>
+                </foreach>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="sublevel.matrix" id="item">
+                <tr>
+                    <td>{$item.id}</td>
+                    <td>{$item.title}</td>
+                    <volist name="item.data" id="vo">
+                        <if condition="$vo[fromid] lt $vo[toid]">
+                            <td class="editable" data-fromid="{$vo.fromid}" data-toid="{$vo.toid}" data-toggle="modal"
+                                data-target="#weightEditDiv">
+                                ({$vo.min},{$vo.normal},{$vo.max})
+                                <i class="icon-edit"></i>
+                            </td>
+                            <elseif condition="$vo[fromid] eq $vo[toid]"/>
+                            <td class="fixed">({$vo.min},{$vo.normal},{$vo.max})</td>
+                            <else/>
+                            <td class="uneditable">({$vo.min},{$vo.normal},{$vo.max})</td>
+                        </if>
+                    </volist>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </foreach>
 </div>
 <div id="weightEditDiv" class="modal hide">
     <div class="modal-header">
