@@ -1,1 +1,110 @@
 <layout name="layout"/>
+<style>
+    .editable {
+        background-color: #dff0d8;
+    }
+
+    .fixed {
+        background-color: #bd362f;
+    }
+
+    .uneditable {
+        background-color: #c5c5c5;
+    }
+</style>
+<h3>权重编辑</h3>
+<div>
+    <h4>一级项目</h4>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td></td>
+            <td class="span2"></td>
+            <foreach name="level1" item="item">
+                <td>{$item.id}</td>
+            </foreach>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="level1Matrix" id="item">
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.title}</td>
+                <volist name="item.data" id="vo">
+                    <if condition="$vo[fromid] lt $vo[toid]">
+                        <td class="editable" data-fromid="{$vo.fromid}" data-toid="{$vo.toid}" data-toggle="modal"
+                            data-target="#weightEditDiv">
+                            ({$vo.min},{$vo.normal},{$vo.max})
+                            <i class="icon-edit"></i>
+                        </td>
+                        <elseif condition="$vo[fromid] eq $vo[toid]"/>
+                        <td class="fixed">({$vo.min},{$vo.normal},{$vo.max})</td>
+                        <else/>
+                        <td class="uneditable">({$vo.min},{$vo.normal},{$vo.max})</td>
+                    </if>
+                </volist>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>二级项目</h4>
+</div>
+<div id="weightEditDiv" class="modal hide">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>编辑项目</h3>
+    </div>
+    <div class="modal-body">
+        <form id="weightEditForm" class="form-horizontal" method="post" action="{:U('Item/editWeight')}">
+            <input type="hidden" name="fromid">
+            <input type="hidden" name="toid">
+
+            <div class="control-group">
+                <label class="control-label">最小值</label>
+
+                <div class="controls">
+                    <input type="number" value="1" name="min">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">中间值</label>
+
+                <div class="controls">
+                    <input type="number" value="1" name="normal">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">最大值</label>
+
+                <div class="controls">
+                    <input type="number" value="1" name="max">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="editSubmitBtn" class="btn btn-danger">提交</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true" id="editCancelBtn">取消</button>
+    </div>
+</div>
+
+<script>
+jQuery(function ($) {
+    $('td.editable').click(function () {
+        var td = this, form = $('#weightEditForm');
+        var fromid = $(td).attr('data-fromid'), toid = $(td).attr('data-toid');
+
+        form[0].reset();
+        form.find('input[name=fromid]').val(fromid);
+        form.find('input[name=toid]').val(toid);
+    });
+    $('#editSubmitBtn').click(function () {
+        $('#weightEditForm').submit();
+    });
+    $('#editCancelBtn').click(function () {
+        $('#weightEditForm')[0].reset();
+    })
+});
+</script>
