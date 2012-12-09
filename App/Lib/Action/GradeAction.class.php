@@ -99,7 +99,6 @@ class GradeAction extends Action
             $info = $upload->getUploadFileInfo();
             $file = $info[0];
             $path = $file['savepath'] . $file['savename'];
-            dump($path);
             //Read Excel
             try {
                 Vendor("PHPExcel.PHPExcel.IOFactory");
@@ -130,12 +129,14 @@ class GradeAction extends Action
                         $result[] = "[失败]学号：$data[studentid]，错误信息：" . $model->getError();
                     }
                 }
+                unlink($path);
                 if ($errCount) {
                     $this->error(implode('<br>', $result), U('Grade/input'));
                 } else {
                     $this->success(implode('<br>', $result), U('Grade/input'));
                 }
             } catch (Exception $e) {
+                unlink($path);
                 $this->error($e->getMessage(), U('Grade/input'));
             }
         }
