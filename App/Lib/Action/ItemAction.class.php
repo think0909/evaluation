@@ -144,7 +144,12 @@ class ItemAction extends Action
     public function calculate($redirect = true)
     {
         //TODO:计算权重
-
+        $model = D('Item');
+        $weight1 = $this->weightCalculate($this->getItemMatrix($model->where('level=1')->select()));
+        foreach ($weight1 as $item) {
+            $model->create($item);
+            $model->save();
+        }
         if ($redirect) {
             $this->success('计算完毕', U('Item/manage'));
         }
