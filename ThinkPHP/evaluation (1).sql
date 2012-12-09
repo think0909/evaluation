@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 12 月 07 日 12:41
+-- 生成日期: 2012 年 12 月 09 日 10:03
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.4.3
 
@@ -28,10 +28,28 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `grade` (
   `itemid` int(10) unsigned NOT NULL,
-  `studentid` int(10) unsigned NOT NULL,
+  `studentid` varchar(10) NOT NULL,
   `point` int(11) DEFAULT NULL,
   PRIMARY KEY (`itemid`,`studentid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `grade`
+--
+
+INSERT INTO `grade` (`itemid`, `studentid`, `point`) VALUES
+(3, '5090729013', 87),
+(3, '5090729022', 60),
+(4, '5090729013', 88),
+(4, '5090729022', 80),
+(5, '5090729013', 98),
+(5, '5090729022', 79),
+(6, '5090729013', 87),
+(6, '5090729022', 99),
+(7, '5090729013', 56),
+(7, '5090729022', 88),
+(8, '5090729013', 90),
+(8, '5090729022', 90);
 
 -- --------------------------------------------------------
 
@@ -48,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `weigth` int(10) unsigned DEFAULT NULL,
   `full` int(10) unsigned DEFAULT '100',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- 转存表中的数据 `item`
@@ -59,7 +77,9 @@ INSERT INTO `item` (`id`, `title`, `description`, `level`, `parentid`, `weigth`,
 (4, '科学文化素质', NULL, '1', NULL, NULL, 100),
 (5, '身心素质', NULL, '1', NULL, NULL, 100),
 (6, '军事素质', NULL, '1', NULL, NULL, 100),
-(7, '创新实践能力', NULL, '1', NULL, NULL, 100);
+(7, '创新实践能力', NULL, '1', NULL, NULL, 100),
+(8, '学习成绩', NULL, '2', 4, NULL, 100),
+(9, '体育锻炼', NULL, '2', 5, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -103,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `auth`) VALUES
-(4, 'chengs', '698d51a19d8a121ce581499d7b701668', 3);
+(5, '123', 'bcbe3365e6ac95ea2c0343a2395834dd', 3);
 
 -- --------------------------------------------------------
 
@@ -118,6 +138,14 @@ CREATE TABLE IF NOT EXISTS `weight` (
   `normal` float NOT NULL DEFAULT '1',
   `max` float NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `weight`
+--
+
+INSERT INTO `weight` (`fromid`, `toid`, `min`, `normal`, `max`) VALUES
+(3, 4, 1, 1, 2),
+(4, 6, 3, 5, 7);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
