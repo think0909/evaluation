@@ -45,6 +45,7 @@ class ItemAction extends Action
         $this->display();
     }
 
+
     public function getItemMatrix($searchResult)
     {
         $result = array();
@@ -131,6 +132,7 @@ class ItemAction extends Action
 
             if ($model->add()) {
                 $this->success('编辑成功！', U('Item/weight'));
+                $this->calculate(false);
             } else {
                 $this->error('编辑失败！' . $model->getDbError(), U('Item/weight'));
             }
@@ -198,4 +200,58 @@ class ItemAction extends Action
             $this->error('编辑失败！' . $model->getError(), U('Item/manage'));
         }
     }
+
+    public function compare($s1, $s2)
+    {
+        return ($s2['min'] - $s1['max']) / (($s1['normal'] - $s1['max']) - ($s2['normal'] - $s2['min']));
+    }
+
+    public function weightCalculate($s)
+    {
+        $length = count($s);
+        for ($i = 0; $i < $length; $i++) {
+            if (count($s[$i]['data']) != $length) return null;
+        }
+        $sums = array("max" => 0,
+            "min" => 0,
+            "normal" => 0
+        );
+        foreach ($sums as $key => $sum) {
+            for ($i = 0; $i < $length; $i++) {
+                $sum_row[$i][$key] = 0;
+                for ($j = 0; $j < $length; $j++) {
+                    $sum_row[$i][$key] += $s[$i]['data'][$j][$key];
+                }
+            }
+        }
+        for ($i = 0; $i < $length; $i++) {
+            $sums['max'] += $sum_row[$i]['max'];
+            $sums['min'] += $sum_row[$i]['min'];
+            $sums['normal'] += $sum_row[$i]['normal'];
+        }
+        for ($i = 0; $i < $length; $i++) {
+            $sum_row[$i]['normal'] = $sum_row[$i]['normal'] / $sums['normal'];
+            $sum_row[$i]['max'] = $sum_row[$i]['max'] / $sums['min'];
+            $sum_row[$i]['min'] = $sum_row[$i]['min'] / $sums['max'];
+        }
+        $sum_result = 0;
+        for ($i = 0; $i < $length; $i++) {
+            $result[$i]['id'] = $s[$i]['id'];
+            $result[$i]['weight'] = 100;
+            for ($j = 0; $j < $length; $j++) {
+                if ($j == $i) continue;
+                $s1 = $sum_row[$i];
+                $s2 = $sum_row[$j];
+                $temp = $this->compare($s1, $s2);
+                $result[$i]['weight'] = ($temp < $result[$i]['weight']) ? $temp : $result[$i]['weight'];
+            }
+            $sum_result += $result[$i]['weight'];
+        }
+        for ($i = 0; $i < $length; $i++) {
+            $result[$i]['weight'] /= $sum_result;
+        }
+        return $result;
+    }
+
 }
+
