@@ -13,13 +13,13 @@
 <div class="row">
     <div class="span8">
         <h4>用户列表</h4>
-        <table class="table table-bordered table-hover">
+        <table class="tablesorter table table-bordered table-hover">
             <thead>
             <tr>
-                <td class="span1">ID</td>
-                <td>用户名</td>
-                <td class="span1">等级</td>
-                <td class="span2">功能</td>
+                <th class="span1">ID</th>
+                <th>用户名</th>
+                <th class="span1">等级</th>
+                <th class="span2">功能</th>
             </tr>
             </thead>
             <tbody>
@@ -145,29 +145,39 @@
 </div>
 
 <script type="text/javascript">
-//edit
-$('button[name=editUserBtn]').click(function (e) {
-    var form = $('#editUserDiv').find('form');
-    var btn = e.currentTarget;
-    var id = $(btn).attr('data-id');
-    var username = $(btn).attr('data-username');
-    var auth = $(btn).attr('data-auth');
-    var password = $(btn).attr('data-password');
+jQuery(document).ready(function () {
+    //edit
+    $('button[name=editUserBtn]').click(function (e) {
+        var form = $('#editUserDiv').find('form');
+        var btn = e.currentTarget;
+        var id = $(btn).attr('data-id');
+        var username = $(btn).attr('data-username');
+        var auth = $(btn).attr('data-auth');
+        var password = $(btn).attr('data-password');
 
-    form.find('input[name=id]').val(id);
-    form.find('input[name=username]').val(username);
-    form.find('select[name=auth]').val(auth);
-    form.find('input[name=password]').val(password)
-    form.find('input[name=repassword]').val(password)
-});
-//submit
-$('#editSubmitBtn').click(function () {
-    $('#userEditForm').submit();
-});
-$('#addSubmitBtn').click(function () {
-    $('#userAddForm').submit();
-});
-$('#addResetBtn').click(function () {
-    $('#userAddForm')[0].reset();
+        form.find('input[name=id]').val(id);
+        form.find('input[name=username]').val(username);
+        form.find('select[name=auth]').val(auth);
+        form.find('input[name=password]').val(password)
+        form.find('input[name=repassword]').val(password)
+    });
+    //submit
+    $('#editSubmitBtn').click(function () {
+        $('#userEditForm').submit();
+    });
+    $('#addSubmitBtn').click(function () {
+        $('#userAddForm').submit();
+    });
+    $('#addResetBtn').click(function () {
+        $('#userAddForm')[0].reset();
+    });
+    //table sort
+    $('table').tablesorter({
+        headers:{
+            3:{
+                sorter:false
+            }
+        }
+    });
 });
 </script>

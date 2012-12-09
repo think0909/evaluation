@@ -1,42 +1,31 @@
 <layout name="layout"/>
-
-<div id="detailDiv" class="modal hide">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>详细信息</h3>
-    </div>
-    <table class="table table-hover">
-        <tr>
-            <td class="span2">学号</td>
-            <td class="span2">{$stu_id}</td>
-        </tr>
-        <tr>
-            <td class="span2">
-                <ul class="unstyled">
-                    <foreach name="items2" item="item">
-                        <li>
-                            {$item['title']}
-                        </li>
-                    </foreach>
-                </ul>
-            </td>
-            <td class="span2">
-                <ul class="unstyled">
-                    <foreach name="score2" item="score">
-                        <li>
-                            {$score.point}
-                        </li>
-                    </foreach>
-                </ul>
-            </td>
-        </tr>
-    </table>
-    <div class="modal-footer">
-        <a href="{:U('Grade/manage')}" role="button" class="btn btn-info">返回</a>
-    </div>
-
-
+<div class="page-header">
+    <h2>查看成绩</h2>
 </div>
-<script>
-    $('#detailDiv').modal('show');
-</script>
+<div class="row">
+    <div class="span12">
+        <h4>基本信息</h4>
+        <dl>
+            <dt>姓名</dt>
+            <dd></dd>
+            <dt>学号</dt>
+            <dd></dd>
+            <dt>班级</dt>
+            <dd></dd>
+        </dl>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <h4>成绩</h4>
+        <!--TODO:foreach-->
+        <!--一级-->
+        <div class="span4">
+            <!--TODO:foreach level2-->
+            <!--二级-->
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</div>
