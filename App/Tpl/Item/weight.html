@@ -36,13 +36,16 @@
                     <if condition="$vo[fromid] lt $vo[toid]">
                         <td class="editable" data-fromid="{$vo.fromid}" data-toid="{$vo.toid}" data-toggle="modal"
                             data-target="#weightEditDiv">
-                            ({$vo.min},{$vo.normal},{$vo.max})
+                            ({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
                             <i class="icon-edit"></i>
                         </td>
                         <elseif condition="$vo[fromid] eq $vo[toid]"/>
-                        <td class="fixed">({$vo.min},{$vo.normal},{$vo.max})</td>
+                        <td class="fixed">({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
+                        </td>
                         <else/>
-                        <td class="uneditable">({$vo.min},{$vo.normal},{$vo.max})</td>
+                        <td class="uneditable">
+                            ({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
+                        </td>
                     </if>
                 </volist>
             </tr>
@@ -73,13 +76,17 @@
                         <if condition="$vo[fromid] lt $vo[toid]">
                             <td class="editable" data-fromid="{$vo.fromid}" data-toid="{$vo.toid}" data-toggle="modal"
                                 data-target="#weightEditDiv">
-                                ({$vo.min},{$vo.normal},{$vo.max})
+                                ({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
                                 <i class="icon-edit"></i>
                             </td>
                             <elseif condition="$vo[fromid] eq $vo[toid]"/>
-                            <td class="fixed">({$vo.min},{$vo.normal},{$vo.max})</td>
+                            <td class="fixed">
+                                ({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
+                            </td>
                             <else/>
-                            <td class="uneditable">({$vo.min},{$vo.normal},{$vo.max})</td>
+                            <td class="uneditable">
+                                ({$vo.min|displayWeight},{$vo.normal|displayWeight},{$vo.max|displayWeight})
+                            </td>
                         </if>
                     </volist>
                 </tr>
