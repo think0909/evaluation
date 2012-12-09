@@ -41,7 +41,7 @@
                     <td>{$stu.gender}</td>
                     <td>
                         <div class="btn-group">
-                            <a href="#" role="button" class="btn">查看成绩</a>
+                            <a href="{:U('Grade/detail','id='.$stu[id])}" role="button" class="btn">查看成绩</a>
                             <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
                                     data-class="{$stu.class}" data-gender={$stu.gender}
                                     data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
