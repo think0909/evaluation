@@ -64,25 +64,37 @@ class GradeAction extends Action
 
     public function add()
     {
-
         $student = D('Student');
-        $student_id = $_POST['studentid'];
-        $result = $student->where('id=' . $student_id)->select();
-        if ($result == null) {
-            $this->error($student_id, U('Grade/input'));
+        $student_id = $this->_post('studentid');
+        if (!$student->find($student_id)) {
+            $this->error('学号不存在', U('Grade/input'));
         }
-        $grade = D('Grade');
 
-        if ($grade->create()) {
-            if ($grade->add()) {
-                $this->success('成功添加！', U('Grade/input'));
+        $model = D('Grade');
+        $ids = $this->_post('itemid');
+        $result = array();
+        $errCount = 0;
+        foreach ($ids as $itemid) {
+            $data = array('itemid' => $itemid, 'studentid' => $student_id);
+            $data['point'] = $this->_post('item_' . $itemid);
+            if ($model->create($data)) {
+                if ($model->add()) {
+                    $result[] = "[成功]项目：$data[itemid]，分数：$data[point]";
+                } else {
+                    $errCount++;
+                    $result[] = "[失败]项目：$data[itemid]，错误信息：" . $model->getDbError();
+                }
             } else {
-                $this->error($grade->getDbError(), U('Grade/input'));
+                $errCount++;
+                $result[] = "[失败]项目：$data[itemid]，错误信息：" . $model->getError();
             }
-        } else {
-            $this->error($grade->getError(), U('Grade/input'));
         }
 
+        if ($errCount) {
+            $this->error(implode('<br>', $result), U('Grade/input'));
+        } else {
+            $this->success(implode('<br>', $result), U('Grade/input'));
+        }
     }
 
     //上传成绩处理
