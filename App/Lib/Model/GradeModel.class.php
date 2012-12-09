@@ -12,7 +12,7 @@ class GradeModel extends Model
         array('itemid', 'require', '请输入项目编号'),
         array('studentid', 'require', '请输入学号'),
         array('itemid', 'checkItemid', '项目不存在', Model::MUST_VALIDATE, 'callback'),
-        array('itemid', 'checkStudentid', '学号不存在', Model::MUST_VALIDATE, 'callback'),
+        array('studentid', 'checkStudentid', '学号不存在', Model::MUST_VALIDATE, 'callback'),
         array('itemid,point', 'checkPoint', '分数不合法', Model::MUST_VALIDATE, 'callback'),
     );
 
@@ -33,7 +33,7 @@ class GradeModel extends Model
         $itemid = $data['itemid'];
         $point = $data['point'];
         $model = D('Item');
-        if ($item = $model->find($id)) {
+        if ($item = $model->find($itemid)) {
             if ($item['full'] >= $point && $point >= 0) {
                 return true;
             } else {
