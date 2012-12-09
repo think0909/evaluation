@@ -51,4 +51,37 @@ class GradeAction extends Action
         $this->assign("score2", $score2);
         $this->display();
     }
+
+    public function input()
+    {
+        $grade = D("Grade");
+        $item = D("Item");
+        $items2 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
+        $this->assign('items2', $items2);
+
+        $this->display();
+    }
+
+    public function add()
+    {
+
+        $student = D('Student');
+        $student_id = $_POST['studentid'];
+        $result = $student->where('id=' . $student_id)->select();
+        if ($result == null) {
+            $this->error($student_id, U('Grade/input'));
+        }
+        $grade = D('Grade');
+
+        if ($grade->create()) {
+            if ($grade->add()) {
+                $this->success('成功添加！', U('Grade/input'));
+            } else {
+                $this->error($grade->getDbError(), U('Grade/input'));
+            }
+        } else {
+            $this->error($grade->getError(), U('Grade/input'));
+        }
+
+    }
 }
