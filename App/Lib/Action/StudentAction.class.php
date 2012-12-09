@@ -12,7 +12,19 @@ class StudentAction extends Action
     {
         $student = D('Student');
 
-        $data = $student->select();
+        $search = $this->_post('search');
+        $condition = array();
+
+        if ($search) {
+            $spilt = explode(' ', $search);
+            foreach ($spilt as &$value) {
+                $value = "%$value%";
+            }
+            $condition['id|name|class'] = array('like', $spilt, 'OR');
+        }
+
+        $data = $student->where($condition)->select();
+        $this->assign('search', $search);
         $this->assign('students', $data);
         $this->display();
     }

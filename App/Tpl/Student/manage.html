@@ -1,23 +1,35 @@
 <layout name="layout"/>
+<div class="page-header">
+    <h2>学生管理</h2>
+</div>
 <div class="row">
     <div class="span12">
         <button class="btn btn-primary" data-toggle="modal" data-target='#addStudentDiv'>
             <i class="icon-plus"></i>
             添加学生信息
         </button>
+        <button class="btn">
+            <i class="icon-upload"></i>
+            批量导入学生信息
+        </button>
+        <form method='post' action="{:U('Student/manage')}" class="form-search pull-right">
+            <div class="input-append">
+                <input type="text" name="search" class="span2 search-query" value="{$search}">
+                <button type="submit" class="btn"><i class="icon-search"></i>搜索</button>
+            </div>
+        </form>
     </div>
 </div>
 <div class="row">
-    <div class="span8">
-        <h4>查询结果</h4>
-        <table class="table table-bordered table-hover">
+    <div class="span12">
+        <table id="studentList" class="tablesorter table table-bordered table-hover">
             <thead>
             <tr>
-                <td class="span2">姓名</td>
-                <td class="span2">学号</td>
-                <td class="span2">班级</td>
-                <td class="span1">性别</td>
-                <td class="span2">功能</td>
+                <th>姓名</th>
+                <th class="span2">学号</th>
+                <th class="span2">班级</th>
+                <th class="span1">性别</th>
+                <th class="span3">功能</th>
             </tr>
             </thead>
             <tbody>
@@ -29,6 +41,7 @@
                     <td>{$stu.gender}</td>
                     <td>
                         <div class="btn-group">
+                            <a href="#" role="button" class="btn">查看成绩</a>
                             <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
                                     data-class="{$stu.class}" data-gender={$stu.gender}
                                     data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
@@ -40,11 +53,6 @@
             </foreach>
             </tbody>
         </table>
-    </div>
-    <div class="span4">
-        <div class="well">
-            我是说明
-        </div>
     </div>
 </div>
 
@@ -147,17 +155,28 @@
 
 
 <script>
-$('button[name=editStudentBtn]').click(function (e) {
-    var form = $('#editStudentDiv').find('form');
-    var btn = e.currentTarget;
-    var stu_id = $(btn).attr('data-id');
-    var stu_name = $(btn).attr('data-name');
-    var stu_gender = $(btn).attr('data-gender');
-    var stu_class = $(btn).attr('data-class');
+$(document).ready(function () {
+    //edit bind
+    $('button[name=editStudentBtn]').click(function (e) {
+        var form = $('#editStudentDiv').find('form');
+        var btn = e.currentTarget;
+        var stu_id = $(btn).attr('data-id');
+        var stu_name = $(btn).attr('data-name');
+        var stu_gender = $(btn).attr('data-gender');
+        var stu_class = $(btn).attr('data-class');
 
-    form.find('input[name=id]').val(stu_id);
-    form.find('input[name=name]').val(stu_name);
-    form.find('input[name=class]').val(stu_class);
-    form.find('input[name=gender]').val(stu_gender)
-});
+        form.find('input[name=id]').val(stu_id);
+        form.find('input[name=name]').val(stu_name);
+        form.find('input[name=class]').val(stu_class);
+        form.find('input[name=gender]').val(stu_gender)
+    });
+    //table sorter
+    $('table#studentList').tablesorter({
+        headers:{
+            4:{
+                sorter:false
+            }
+        }
+    });
+})
 </script>
