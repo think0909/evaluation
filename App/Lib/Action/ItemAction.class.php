@@ -139,6 +139,15 @@ class ItemAction extends Action
         }
     }
 
+    public function calculate($redirect = true)
+    {
+        //TODO:计算权重
+
+        if ($redirect) {
+            $this->success('计算完毕', U('Item/manage'));
+        }
+    }
+
     public function add()
     {
         $data = array();
