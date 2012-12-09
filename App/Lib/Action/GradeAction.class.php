@@ -84,4 +84,60 @@ class GradeAction extends Action
         }
 
     }
+
+    //上传成绩处理
+    public function upload()
+    {
+        import('ORG.Net.UploadFile');
+        $upload = new UploadFile(); // 实例化上传类
+        $upload->maxSize = 3145728; // 设置附件上传大小
+        $upload->allowExts = array('xls', 'xlsx'); // 设置附件上传类型
+        $upload->savePath = './Upload/'; // 设置附件上传目录
+        if (!$upload->upload()) { // 上传错误提示错误信息
+            $this->error($upload->getErrorMsg(), U('Grade/input'));
+        } else { // 上传成功 获取上传文件信息
+            $info = $upload->getUploadFileInfo();
+            $file = $info[0];
+            $path = $file['savepath'] . $file['savename'];
+            dump($path);
+            //Read Excel
+            try {
+                Vendor("PHPExcel.PHPExcel.IOFactory");
+                $itemid = $this->_post('id');
+                $objPHPExcel = PHPExcel_IOFactory::load($path);
+                $sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+                //规定：第一行是表头，第一列是学号，第二列是成绩
+                $result = array();
+                $errCount = 0;
+                $model = D('Grade');
+                for ($i = 2; $i <= count($sheetData); $i++) {
+                    $line = $sheetData[$i];
+                    $data = array('itemid' => $itemid);
+                    $data['studentid'] = $line['A'];
+                    if ($model->where($data)->find()) {
+                        $model->where($data)->delete();
+                    }
+                    $data['point'] = $line['B'];
+                    if ($model->create($data)) {
+                        if ($model->add()) {
+                            $result[] = "[成功]学号：$data[studentid]，分数：$data[point]";
+                        } else {
+                            $errCount++;
+                            $result[] = "[失败]学号：$data[studentid]，错误信息：" . $model->getDbError();
+                        }
+                    } else {
+                        $errCount++;
+                        $result[] = "[失败]学号：$data[studentid]，错误信息：" . $model->getError();
+                    }
+                }
+                if ($errCount) {
+                    $this->error(implode('<br>', $result), U('Grade/input'));
+                } else {
+                    $this->success(implode('<br>', $result), U('Grade/input'));
+                }
+            } catch (Exception $e) {
+                $this->error($e->getMessage(), U('Grade/input'));
+            }
+        }
+    }
 }

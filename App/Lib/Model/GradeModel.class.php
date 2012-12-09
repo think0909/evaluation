@@ -11,7 +11,7 @@ class GradeModel extends Model
     protected $_validate = array(
         array('itemid', 'require', '请输入项目编号'),
         array('studentid', 'require', '请输入学号'),
-
+        //TODO:检查学号分数项目id的合法性
     );
 
 }
