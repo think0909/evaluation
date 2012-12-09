@@ -1,4 +1,8 @@
-div#container{
+body {
+'Segoe UI', 微 软 雅 黑, 文 泉 驿 微 米 黑, 黑 体, 'Microsoft Yahei', STHeiti, 'Microsoft JhengHei', SimHei, serif;
+}
+
+div#container {
     min-height: 500px;
     padding-top: 40px;
 }
