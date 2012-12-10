@@ -73,7 +73,7 @@ class GradeAction extends Action
 
         $this->assign('sum_point', $sum_point);
         $this->display();
-        //TODO
+        //TODO 一级目录写入数据库
         /*
                 $itemids1 = $item->distinct(true)->field('id')->where('level=1')->order('id asc')->select();
                 foreach ($itemids1 as $itemid1) {
@@ -95,6 +95,7 @@ class GradeAction extends Action
     {
         $grade = D("Grade");
         $item = D("Item");
+        $student = D('Student');
         $items2 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
         $this->assign('items2', $items2);
 
@@ -103,7 +104,9 @@ class GradeAction extends Action
             $id2[] = $itemid2['id'];
         }
         $stu_id = $this->_get('id');
-        $this->assign("stu_id", $stu_id);
+        $stu_info = $student->where(array('id' => $stu_id))->select();
+
+        $this->assign("stu_info", $stu_info);
 
         $score2 = $grade->where(array('studentid' => $stu_id, 'itemid' => array('in', $id2)))->order('itemid asc')->select();
         $this->assign("score2", $score2);
