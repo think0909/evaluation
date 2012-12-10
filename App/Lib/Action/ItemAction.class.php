@@ -150,6 +150,17 @@ class ItemAction extends Action
             $model->create($item);
             $model->save();
         }
+
+        $items1 = $model->where('level=1')->select();
+
+        foreach ($items1 as $item1) {
+            $items2 = $model->where(array("level" => 2, "parentid" => $item1['id']))->select();
+            $weight2 = $this->weightCalculate($this->getItemMatrix($items2));
+            foreach ($weight2 as $item) {
+                $model->create($item);
+                $model->save();
+            }
+        }
         if ($redirect) {
             $this->success('计算完毕', U('Item/manage'));
         }
