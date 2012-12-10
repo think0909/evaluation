@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 12 月 09 日 10:03
+-- 生成日期: 2012 年 12 月 10 日 06:26
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.4.3
 
@@ -63,23 +63,25 @@ CREATE TABLE IF NOT EXISTS `item` (
   `description` text,
   `level` enum('1','2') NOT NULL,
   `parentid` int(10) unsigned DEFAULT NULL,
-  `weigth` int(10) unsigned DEFAULT NULL,
+  `weight` float unsigned DEFAULT NULL,
   `full` int(10) unsigned DEFAULT '100',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- 转存表中的数据 `item`
 --
 
-INSERT INTO `item` (`id`, `title`, `description`, `level`, `parentid`, `weigth`, `full`) VALUES
-(3, '思想政治素质', NULL, '1', NULL, NULL, 100),
-(4, '科学文化素质', NULL, '1', NULL, NULL, 100),
-(5, '身心素质', NULL, '1', NULL, NULL, 100),
-(6, '军事素质', NULL, '1', NULL, NULL, 100),
-(7, '创新实践能力', NULL, '1', NULL, NULL, 100),
-(8, '学习成绩', NULL, '2', 4, NULL, 100),
-(9, '体育锻炼', NULL, '2', 5, NULL, 100);
+INSERT INTO `item` (`id`, `title`, `description`, `level`, `parentid`, `weight`, `full`) VALUES
+(3, '思想政治素质', '思想文化素质很重要', '1', 0, 0.393003, 100),
+(4, '科学文化素质', NULL, '1', NULL, 0.371166, 100),
+(5, '身心素质', NULL, '1', NULL, 0.134602, 100),
+(6, '军事素质', NULL, '1', NULL, 0.101229, 100),
+(8, '学习成绩', NULL, '2', 4, 0.766667, 100),
+(9, '体育锻炼', NULL, '2', 5, 0.445102, 100),
+(10, '课外交流', '', '2', 4, 0.233333, 100),
+(11, '道德品质', '', '2', 5, 0.14322, 100),
+(12, '人格魅力', '', '2', 5, 0.411678, 100);
 
 -- --------------------------------------------------------
 
@@ -144,8 +146,16 @@ CREATE TABLE IF NOT EXISTS `weight` (
 --
 
 INSERT INTO `weight` (`fromid`, `toid`, `min`, `normal`, `max`) VALUES
-(3, 4, 1, 1, 2),
-(4, 6, 3, 5, 7);
+(3, 6, 1, 3, 5),
+(4, 5, 1, 3, 5),
+(4, 6, 3, 5, 7),
+(3, 4, 1, 3, 5),
+(3, 5, 1, 3, 5),
+(5, 6, 1, 1, 1),
+(8, 10, 1, 3, 5),
+(9, 11, 1, 2, 3),
+(9, 12, 1, 4, 7),
+(11, 12, 0.1, 0.2, 0.4);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
