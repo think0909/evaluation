@@ -61,16 +61,19 @@ class GradeAction extends Action
                 }
                 $sum_point[$stu_id['id']][$item1['id']] = 0;
                 $point[$stu_id['id']][$item1['id']] = $grade->where(array('itemid' => array('in', $temp2[$item1['id']]), 'studentid' => $stu_id['id']))->select();
-
+                if ($point[$stu_id['id']][$item1['id']] != false) {
+                    foreach ($point[$stu_id['id']][$item1['id']] as $p_p) {
+                        if ($p_p['point'] == null) continue;
+                        $temp3 = $item->where(array('id' => $p_p['itemid']))->select();
+                        $sum_point[$stu_id['id']][$item1['id']] = $sum_point[$stu_id['id']][$item1['id']] + $p_p['point'] * 100 * floatval($temp3[0]['weight']) / floatval($temp3[0]['full']);
+                    }
+                }
             }
         }
 
         $this->assign('sum_point', $sum_point);
-        foreach ($point as $p) {
-
-        }
         $this->display();
-        //TODO 利用$point计算总分，涉及到对应的权重weight和full变量
+        //TODO
         /*
                 $itemids1 = $item->distinct(true)->field('id')->where('level=1')->order('id asc')->select();
                 foreach ($itemids1 as $itemid1) {
