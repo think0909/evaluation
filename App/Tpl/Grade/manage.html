@@ -16,11 +16,11 @@
             </tr>
             </thead>
             <tbody>
-            <foreach name="score1" item="items" key='id'>
+            <foreach name="students" item="stu_id">
                 <tr>
-                    <td>{$id}</td>
-                    <foreach name="items" item="score1">
-                        <td>{$score1.point}</td>
+                    <td>{$stu_id['id']}</td>
+                    <foreach name="items1" item="item">
+                        <td>{$sum_point[$stu_id['id']][$item['id']]}</td>
                     </foreach>
                     <td></td>
                     <td>

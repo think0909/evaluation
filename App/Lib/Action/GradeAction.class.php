@@ -12,25 +12,80 @@ class GradeAction extends Action
     {
         $grade = D("Grade");
         $item = D("Item");
-
-        $items1 = $item->distinct(true)->field('title')->where('level=1')->order('title')->select();
+        $student = D('Student');
+        $items1 = $item->distinct(true)->field('title,id')->where('level=1')->order('id')->select();
         $this->assign('items1', $items1);
-
-
-        $itemids1 = $item->distinct(true)->field('id')->where('level=1')->order('id asc')->select();
-        foreach ($itemids1 as $itemid1) {
-            $id1[] = $itemid1['id'];
+        /*
+        foreach($ids as $stu_id){
+            for($i=0;$i<count($items1);$i++) {
+                $point[$stu_id['studentid']][]=0;
+            }
+        }
+        */
+        $students = $student->distinct(true)->field('id')->select();
+        $this->assign("students", $students);
+        $items = $item->distinct(true)->field('id')->select();
+        foreach ($items as $s) {
+            $set_item_id[] = $s['id'];
         }
 
-        $ids = $grade->distinct(true)->field('studentid')->order('studentid')->select();
-        $this->assign("ids", $ids);
-
-        foreach ($ids as $id) {
-            $score1[$id[studentid]] = $grade->where(array('studentid' => $id[studentid], 'itemid' => array('in', $id1)))->order('itemid asc')->select();
+        foreach ($students as $stu) {
+            $grade_itemid = $grade->distinct(true)->field('itemid')->where(array('studentid' => $stu['id']))->select();
+            foreach ($grade_itemid as $s) {
+                $set_grade_itemid[$stu['id']][] = $s['itemid'];
+            }
+            foreach ($set_item_id as $s) {
+                if (in_array($s, $set_grade_itemid[$stu['id']])) continue;
+                else {
+                    $data['studentid'] = $stu['id'];
+                    $data['itemid'] = $s;
+                    if ($grade->create($data)) {
+                        if ($grade->add()) {
+                            //  $this->success('成功添加！', U('Grade/manage'));
+                        } else {
+                            $this->error($grade->getDbError(), U('Grade/manage'));
+                        }
+                    } else {
+                        $this->error($grade->getError(), U('Grade/manage'));
+                    }
+                }
+            }
         }
-        $this->assign("score1", $score1);
 
+
+        foreach ($students as $stu_id) {
+            foreach ($items1 as $item1) {
+                $temp = $item->where(array('parentid' => $item1['id']))->select();
+                foreach ($temp as $s) {
+                    $temp2[$item1['id']][] = $s['id'];
+                }
+                $sum_point[$stu_id['id']][$item1['id']] = 0;
+                $point[$stu_id['id']][$item1['id']] = $grade->where(array('itemid' => array('in', $temp2[$item1['id']]), 'studentid' => $stu_id['id']))->select();
+
+            }
+        }
+
+        $this->assign('sum_point', $sum_point);
+        foreach ($point as $p) {
+
+        }
         $this->display();
+        //TODO 利用$point计算总分，涉及到对应的权重weight和full变量
+        /*
+                $itemids1 = $item->distinct(true)->field('id')->where('level=1')->order('id asc')->select();
+                foreach ($itemids1 as $itemid1) {
+                    $id1[] = $itemid1['id'];
+                }
+
+                $ids = $grade->distinct(true)->field('studentid')->order('studentid')->select();
+                $this->assign("ids", $ids);
+
+                foreach ($ids as $id) {
+                    $score1[$id[studentid]] = $grade->where(array('studentid' => $id[studentid], 'itemid' => array('in', $id1)))->order('itemid asc')->select();
+                }
+                $this->assign("score1", $score1);
+
+        */
     }
 
     public function detail()
