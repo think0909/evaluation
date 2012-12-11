@@ -18,14 +18,26 @@
 <div class="row">
     <div class="span12">
         <h4>成绩</h4>
-        <!--TODO:foreach-->
-        <!--一级-->
-        <div class="span4">
-            <!--TODO:foreach level2-->
-            <!--二级-->
-            <ul>
-                <li></li>
-            </ul>
-        </div>
+        <foreach name='point' item="first">
+            <div class="span4">
+                {$first['title']}
+            </div>
+            <div class="span4 row">
+                <div class="span2">
+                    <foreach name="first['name']" item="name">
+                        <ul>
+                            <li>{$name}</li>
+                        </ul>
+                    </foreach>
+                </div>
+                <div class="span2">
+                    <foreach name="first['data']" item="score">
+                        <ul>
+                            <li>{$score['point']}</li>
+                        </ul>
+                    </foreach>
+                </div>
+            </div>
+        </foreach>
     </div>
 </div>

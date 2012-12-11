@@ -96,20 +96,27 @@ class GradeAction extends Action
         $grade = D("Grade");
         $item = D("Item");
         $student = D('Student');
-        $items2 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
-        $this->assign('items2', $items2);
 
-        $itemids2 = $item->distinct(true)->field('id')->where('level=2')->order('id asc')->select();
-        foreach ($itemids2 as $itemid2) {
-            $id2[] = $itemid2['id'];
-        }
         $stu_id = $this->_get('id');
         $stu_info = $student->where(array('id' => $stu_id))->select();
-
         $this->assign("stu_info", $stu_info);
 
-        $score2 = $grade->where(array('studentid' => $stu_id, 'itemid' => array('in', $id2)))->order('itemid asc')->select();
-        $this->assign("score2", $score2);
+        $items1 = $item->distinct(true)->field('title,id')->where('level=1')->order('id')->select();
+        $this->assign('items1', $items1);
+
+        foreach ($items1 as $item1) {
+            $temp = $item->where(array('parentid' => $item1['id']))->select();
+            foreach ($temp as $s) {
+                $temp1[$item1['id']][] = $s['id'];
+            }
+            $point[$item1['id']]['data'] = $grade->where(array('itemid' => array('in', $temp1[$item1['id']]), 'studentid' => $stu_id))->select();
+            $point[$item1['id']]['title'] = $item1['title'];
+            foreach ($point[$item1['id']]['data'] as $data) {
+                $temp2 = $item->where(array('id' => $data['itemid']))->select();
+                $point[$item1['id']]['name'][$data['itemid']] = $temp2[0]['title'];
+            }
+        }
+        $this->assign("point", $point);
         $this->display();
     }
 
@@ -117,8 +124,8 @@ class GradeAction extends Action
     {
         $grade = D("Grade");
         $item = D("Item");
-        $items2 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
-        $this->assign('items2', $items2);
+        $items1 = $item->distinct(true)->field('title,id')->where('level=2')->order('id')->select();
+        $this->assign('items2', $items1);
 
         $this->display();
     }
