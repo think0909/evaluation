@@ -14,7 +14,19 @@ class GradeAction extends Action
         $item = D('Item');
         $items1 = $item->where('level=1')->order('id asc')->select();
         $data = array();
-        $students = $student->select();
+        $search = $this->_post('search');
+        $condition = array();
+
+        if ($search) {
+            $spilt = explode(' ', $search);
+            foreach ($spilt as &$value) {
+                $value = "%$value%";
+            }
+            $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
+        }
+
+        $students = $student->where($condition)->select();
+        $this->assign('search', $search);
 
         foreach ($students as $s) {
             $res = $this->calculate($s['id']);

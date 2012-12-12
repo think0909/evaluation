@@ -4,6 +4,14 @@
 </div>
 <div class="row">
     <div class="span12">
+        <form method='post' action="{:U('Grade/manage')}" class="form-search pull-right">
+            <div class="input-append">
+                <input type="text" name="search" class="span2 search-query" value="{$search}">
+                <button type="submit" class="btn"><i class="icon-search"></i>搜索</button>
+            </div>
+        </form>
+    </div>
+    <div class="span12">
         <table id="GradeList" class="table table-bordered table-hover tablesorter">
             <thead>
             <tr>
