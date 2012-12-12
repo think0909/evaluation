@@ -8,7 +8,7 @@
             <i class="icon-plus"></i>
             添加学生信息
         </button>
-        <button class="btn">
+        <button class="btn" data-toggle="modal" data-target="#infoImportDiv">
             <i class="icon-upload"></i>
             批量导入学生信息
         </button>
@@ -61,10 +61,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>添加学生信息</h3>
     </div>
-    <form method="post" class="form-horizontal" action="{:U('Student/add')}">
-        <input type="hidden" name="id">
+    <div class="modal-body">
+        <form method="post" id="addStudentForm" class="form-horizontal" action="{:U('Student/add')}">
+            <input type="hidden" name="id">
 
-        <div class="modal-body">
+
             <div class="control-group">
                 <label class="control-label">姓名</label>
 
@@ -96,12 +97,13 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">提交</button>
-            <button type="reset" class="btn btn">重填</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="addStudentSubmitBtn" class="btn btn-danger">提交</button>
+        <button type="reset" id="addStudentResetBtn" class="btn btn">重填</button>
+    </div>
+
 </div>
 
 
@@ -110,10 +112,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>编辑学生信息</h3>
     </div>
-    <form method="post" class="form-horizontal" action="{:U('Student/edit')}">
-        <input type="hidden" name="id">
+    <div class="modal-body">
+        <form method="post" id="editStudentForm" class="form-horizontal" action="{:U('Student/edit')}">
+            <input type="hidden" name="id">
 
-        <div class="modal-body">
+
             <div class="control-group">
                 <label class="control-label">姓名</label>
 
@@ -145,12 +148,39 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-danger">提交</button>
-            <button type="reset" class="btn btn">重填</button>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="editStudentSubmitBtn" class="btn btn-danger">提交</button>
+    </div>
+
+</div>
+
+<div class="modal hide" id="infoImportDiv">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>批量导入信息</h3>
+    </div>
+    <div class="modal-body">
+        <form id="infoImportForm" name="file" method="post" enctype="multipart/form-data" class="form-horizontal"
+              action="{:U('Student/upload')}">
+            <div class="control-group">
+                <div class="controls">
+                    <a href="Static/example/studentinfo.xlsx" target="_blank">[点此下载学生表格]</a>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">选择文件</label>
+
+                <div class="controls">
+                    <input type="file" name="file">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="infoImportSubmitBtn" class="btn btn-danger"><i class="icon-upload"></i>上传</button>
+    </div>
 </div>
 
 
@@ -178,5 +208,18 @@ $(document).ready(function () {
             }
         }
     });
+    //submit
+    $('#addStudentSubmitBtn').click(function () {
+        $('#addStudentForm').submit();
+    })
+    $('#editStudentSubmitBtn').click(function () {
+        $('#editStudentForm').submit();
+    })
+    $('#addStudentResetBtn').click(function () {
+        $('#addStudentForm')[0].reset();
+    })
+    $('#infoImportSubmitBtn').click(function () {
+        $('#infoImportForm').submit();
+    })
 })
 </script>
