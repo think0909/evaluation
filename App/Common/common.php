@@ -25,6 +25,11 @@ function displayWeight($weight)
     return isInt($weight) ? number_format($weight, 0) : number_format($weight, 2);
 }
 
+function br2nl($text)
+{
+    return preg_replace('/<br\\s*?\/??>/i', "\\n", $text);
+}
+
 function utf8substr($sourcestr, $cutlength)
 {
     $returnstr = '';
