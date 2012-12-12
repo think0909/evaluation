@@ -4,40 +4,37 @@
 </div>
 <div class="row">
     <div class="span12">
-        <h4>基本信息</h4>
-        <dl>
-            <dt>姓名</dt>
-            <dd>{$stu_info[0]['name']}</dd>
-            <dt>学号</dt>
-            <dd>{$stu_info[0]['id']}</dd>
-            <dt>班级</dt>
-            <dd>{$stu_info[0]['class']}</dd>
-        </dl>
-    </div>
-</div>
-<div class="row">
-    <div class="span12">
-        <h4>成绩</h4>
-        <foreach name='point' item="first">
-            <div class="span4">
-                {$first['title']}
+        <div class="row">
+            <div class="span6">
+                <dl>
+                    <dt>姓名</dt>
+                    <dd>{$student.name}</dd>
+                    <dt>班级</dt>
+                    <dd>{$student.class}</dd>
+                    <dt>学号</dt>
+                    <dd>{$student.id}</dd>
+                </dl>
             </div>
-            <div class="span4 row">
-                <div class="span2">
-                    <foreach name="first['name']" item="name">
-                        <ul>
-                            <li>{$name}</li>
-                        </ul>
-                    </foreach>
-                </div>
-                <div class="span2">
-                    <foreach name="first['data']" item="score">
-                        <ul>
-                            <li>{$score['point']}</li>
-                        </ul>
-                    </foreach>
-                </div>
+
+            <div class="span6">
+                <h3 class="text-warning">总分：{$point|displayWeight}</h3>
             </div>
-        </foreach>
+        </div>
     </div>
+
+
+    <foreach name="data" item="level1">
+        <div class="span4">
+            <h5 class="text-info">{$level1.title}</h5>
+
+            <p>权重：{$level1.weight|displayWeight}，得分：{$level1.point}</p>
+
+            <p>分项得分：</p>
+            <ol>
+                <foreach name="level1.subItems" item="level2">
+                    <li>{$level2.title}-{$level2.point}({$level2.weight|displayWeight})</li>
+                </foreach>
+            </ol>
+        </div>
+    </foreach>
 </div>

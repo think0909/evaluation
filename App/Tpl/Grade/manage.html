@@ -4,27 +4,38 @@
 </div>
 <div class="row">
     <div class="span12">
-        <table class="table table-bordered table-hover">
+        <table id="GradeList" class="table table-bordered table-hover tablesorter">
             <thead>
             <tr>
-                <td class="span1">学号</td>
+                <th>学号</th>
+                <th class="span1">姓名</th>
+                <th>性别</th>
+                <th class="span1">班级</th>
+
                 <foreach name="items1" item="item">
-                    <td class="span1">{$item.title}</td>
+                    <th><a href="#" rel="tooltip" data-placement="bottom"
+                           data-original-title="{$item.title}({$item.weight|displayWeight})">{$item.title|utf8substr=4}</a>
+                    </th>
                 </foreach>
-                <td class="span1">总分</td>
-                <td class="span1">功能</td>
+
+                <th class="span1">总分</th>
+                <th>功能</th>
             </tr>
             </thead>
             <tbody>
-            <foreach name="students" item="stu_id">
+            <foreach name="data" item="student">
                 <tr>
-                    <td>{$stu_id['id']}</td>
-                    <foreach name="items1" item="item">
-                        <td>{$sum_point[$stu_id['id']][$item['id']]}</td>
+                    <td>{$student.id}</td>
+                    <td>{$student.name}</td>
+                    <td>{$student.gender}</td>
+                    <td>{$student.class}</td>
+
+                    <foreach name="student.details" item="item">
+                        <td>{$item.point|displayWeight}</td>
                     </foreach>
-                    <td></td>
+                    <td>{$student.point|displayWeight}</td>
                     <td>
-                        <a href="{:U('Grade/detail','id='.$stu_id['id'])}" role="button" class="btn btn-info">详细信息</a>
+                        <a href="{:U('Grade/detail','id='.$student['id'])}" role="button" class="btn btn-info">详细信息</a>
                     </td>
                 </tr>
             </foreach>
@@ -33,7 +44,21 @@
     </div>
 </div>
 
-
+<script>
+jQuery(document).ready(function () {
+    //tooltip
+    $('a[rel=tooltip]').tooltip()
+    //table sort
+    var thCount = $('table thead th').length;
+    var headers = {};
+    headers[thCount - 1] = {
+        sorter:false
+    }
+    $('table#GradeList').tablesorter({
+        headers:headers
+    })
+});
+</script>
 
 
 
