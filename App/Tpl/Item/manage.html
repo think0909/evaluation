@@ -20,7 +20,7 @@
                 <td>{$item.id}</td>
                 <td>{$item.title}</td>
                 <td>{$item.description}</td>
-                <td>{$item.weight}</td>
+                <td>{$item.weight|displayWeight}</td>
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-info" name="itemEditBtn" data-id="{$item.id}" data-title="{$item.title}"
@@ -60,7 +60,7 @@
                     <td>{$item.title}</td>
                     <td>{$item.description}</td>
                     <td>{$item.full}</td>
-                    <td>{$item.weight}</td>
+                    <td>{$item.weight|displayWeight}</td>
                     <td>
                         <div class="btn-group">
                             <button class="btn btn-info" name="itemEditBtn" data-id="{$item.id}"
