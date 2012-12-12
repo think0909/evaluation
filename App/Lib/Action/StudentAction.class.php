@@ -29,6 +29,17 @@ class StudentAction extends Action
         $this->display();
     }
 
+    public function  typeaheadQuery()
+    {
+        $model = D('Student');
+        $query = $this->_get('query');
+        $condition = array('id' => array('like', "$query%"));
+
+        $results = $model->where($condition)->getField('id', true);
+
+        $this->ajaxReturn($results, 'json');
+    }
+
     public function add()
     {
         $student = D('Student');
