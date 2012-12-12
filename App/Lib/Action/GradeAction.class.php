@@ -70,7 +70,7 @@ class GradeAction extends Action
             }
             $data['details'][] = $level1;
             if ($item[weight] && $item['weight'] > 0) {
-                $data['point'] += $level1['point'];
+                $data['point'] += $level1['point'] * $item['weight'];
             }
         }
         return $data;
