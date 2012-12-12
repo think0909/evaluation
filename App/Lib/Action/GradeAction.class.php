@@ -106,6 +106,7 @@ class GradeAction extends Action
         }
 
         $model = D('Grade');
+        $model1 = D('Grade');
         $ids = $this->_post('itemid');
         $result = array();
         $errCount = 0;
@@ -113,6 +114,7 @@ class GradeAction extends Action
             $data = array('itemid' => $itemid, 'studentid' => $student_id);
             $data['point'] = $this->_post('item_' . $itemid);
             if ($model->create($data)) {
+                $model1->where(array('studentid' => $student_id, 'itemid' => $itemid))->delete();
                 if ($model->add()) {
                     $result[] = "[成功]项目：$data[itemid]，分数：$data[point]";
                 } else {
