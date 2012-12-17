@@ -45,8 +45,8 @@ class IndexAction extends Action
         $student = D('student');
 
         $this->assign('student', $student->count());
-        $this->assign('boys', $student->where("gender = 'male'")->count());
-        $this->assign('girls', $student->where("gender = 'female'")->count());
+        $this->assign('boys', $student->where("gender = '男'")->count());
+        $this->assign('girls', $student->where("gender = '女'")->count());
 
         $this->assign('user', $user->count());
 
