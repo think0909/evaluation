@@ -1,5 +1,7 @@
 <include file="Public:header"/>
-<include file="Public:navbar"/>
+<if condition="checkLogin()">
+    <include file="Public:navbar"/>
+</if>
 <div id="container" class="container">
     {__CONTENT__}
 </div>
