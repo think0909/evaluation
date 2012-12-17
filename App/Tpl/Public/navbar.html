@@ -3,30 +3,39 @@
     <div class="navbar-inner">
         <a class="brand" href="{:U('Index/main')}">国防生综合素质测评管理系统</a>
         <ul class="nav">
-            <!--<li><a href="{:U('User/manage')}">用户管理</a></li>-->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">项目管理<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="{:U('Item/manage')}"><i class="icon-list"></i>项目列表</a>
-                    </li>
-                    <li>
-                        <a href="{:U('Item/weight')}"><i class="icon-edit"></i>权重编辑</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="{:U('Student/manage')}">学生管理</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">成绩管理<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="{:U('Grade/manage')}"><i class="icon-search"></i>成绩查看</a>
-                    </li>
-                    <li>
-                        <a href="{:U('Grade/input')}"><i class="icon-edit"></i>成绩输入</a>
-                    </li>
-                </ul>
-            </li>
+            <if condition="checkAuth() egt 3">
+                <li><a href="{:U('User/manage')}">用户管理</a></li>
+            </if>
+            <if condition="checkAuth() egt 2">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">项目管理<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{:U('Item/manage')}"><i class="icon-list"></i>项目列表</a>
+                        </li>
+                        <li>
+                            <a href="{:U('Item/weight')}"><i class="icon-edit"></i>权重编辑</a>
+                        </li>
+                    </ul>
+                </li>
+            </if>
+            <if condition="checkAuth() egt 1">
+                <li><a href="{:U('Student/manage')}">学生管理</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">成绩管理<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{:U('Grade/manage')}"><i class="icon-search"></i>成绩查看</a>
+                        </li>
+                        <li>
+                            <a href="{:U('Grade/input')}"><i class="icon-edit"></i>成绩输入</a>
+                        </li>
+                    </ul>
+                </li>
+            </if>
+        </ul>
+        <ul class="nav pull-right">
+            <li><a href="{:U('Index/takeLogout')}">退出</a></li>
         </ul>
     </div>
 </div>

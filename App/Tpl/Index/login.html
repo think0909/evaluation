@@ -1,0 +1,49 @@
+<layout name="layoutnonav"/>
+
+
+<style>
+    body {
+        padding-top: 200px;
+    }
+
+    div#loginDiv {
+        border: 1px solid #CCCCCC;
+        width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px 10px 10px 10px;
+        top: 30%;
+
+        border-radius: 15px;
+        -moz-border-radius: 15px;
+        -webkit-border-radius: 15px;
+
+    }
+</style>
+<!--login-->
+<div id="loginDiv">
+    <h3 style="text-align: center">管理员入口</h3>
+
+    <form class="form-horizontal" action="{:U('Index/takeLogin')}" method="post">
+        <div class="control-group">
+            <label class="control-label">用户名</label>
+
+            <div class="controls">
+                <input type="text" name="username">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">密码</label>
+
+            <div class="controls">
+                <input type="password" name="password">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">登录</button>
+                <button type="reset" class="btn">重填</button>
+            </div>
+        </div>
+    </form>
+</div>

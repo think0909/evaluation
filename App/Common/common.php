@@ -76,3 +76,18 @@ function utf8substr($sourcestr, $cutlength)
     return $returnstr;
 }
 
+function checkLogin()
+{
+    return session('user');
+}
+
+function checkAuth()
+{
+    if ($id = checkLogin()) {
+        $model = D('User');
+        $user = $model->find($id);
+        return $user['auth'];
+    } else {
+        return 0;
+    }
+}
