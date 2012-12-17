@@ -5,7 +5,6 @@
     }
 
     div#loginDiv {
-        border: 1px solid #CCCCCC;
         width: 500px;
         margin-left: auto;
         margin-right: auto;
@@ -17,31 +16,53 @@
         -webkit-border-radius: 15px;
 
     }
+
+    div#loginDiv .tab-content {
+        border-bottom: 1px solid #dddddd;
+        border-left: 1px solid #dddddd;
+        border-right: 1px solid #dddddd;
+        margin-top: -20px;
+        padding: 20px;
+    }
 </style>
 <!--login-->
-<div id="loginDiv">
-    <h3 style="text-align: center">管理员入口</h3>
 
-    <form class="form-horizontal" action="{:U('Index/takeLogin')}" method="post">
-        <div class="control-group">
-            <label class="control-label">用户名</label>
+<div id="loginDiv" class="tabbable"> <!-- Only required for left/right tabs -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">管理员入口</a></li>
+        <li><a href="#tab2" data-toggle="tab">学生入口</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <form class="form-horizontal" action="{:U('Index/takeLogin')}" method="post">
+                <div class="control-group">
+                    <label class="control-label">用户名</label>
 
-            <div class="controls">
-                <input type="text" name="username">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">密码</label>
+                    <div class="controls">
+                        <input type="text" name="username">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">密码</label>
 
-            <div class="controls">
-                <input type="password" name="password">
-            </div>
+                    <div class="controls">
+                        <input type="password" name="password">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">登录</button>
+                        <button type="reset" class="btn">重填</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-primary">登录</button>
-                <button type="reset" class="btn">重填</button>
-            </div>
+        <div class="tab-pane" id="tab2">
+            <p style="text-align: center;">
+                <a href="{:U('Index/takeJacLogin')}">
+                    <img src="Static/img/jaccount.png" width="200" height="55">
+                </a>
+            </p>
         </div>
-    </form>
+    </div>
 </div>

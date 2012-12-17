@@ -158,7 +158,7 @@ class JAccountManager
 
     function readKey($sid, $keyDir)
     {
-        $sep = "\\";
+        $sep = "/";
         $filename = $keyDir . $sep . $sid . "_desede.key";
         $handle = fopen($filename, "rb");
         $contents = fread($handle, filesize($filename));

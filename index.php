@@ -7,7 +7,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-define('APP_NAME','evaluate');
-define('APP_PATH','./APP/');
+define('APP_NAME', 'evaluate');
+define('APP_PATH', './APP/');
 define('APP_DEBUG', true);
+
+define('JAKEY_NAME', 'jaourhome05303');
+define('JAKEY_PATH', __DIR__);
+
 require './ThinkPHP/ThinkPHP.php';

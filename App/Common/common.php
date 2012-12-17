@@ -100,7 +100,7 @@ load('@.clsJAccount');
  */
 function jacObj()
 {
-    $jam = new JAccountManager('jaourhome05303', 'E:\JAccount');
+    $jam = new JAccountManager(JAKEY_NAME, JAKEY_PATH);
     return $jam;
 }
 
@@ -115,7 +115,7 @@ function jacLogin()
         }
 
         if ($ht['ja3rdpartySessionID'] == session_id()) {
-            session('jaUsername', $ht['uid'] . '_' . $ht['id']);
+            session('jaUsername', $ht['id']); //学号
             session('jaLogin', 1);
         } else {
             exit('jalogin error');
@@ -129,5 +129,17 @@ function jacGetUser()
         return session('jaUsername');
     } else {
         return FALSE;
+    }
+}
+
+//登出
+function jacLogout()
+{
+    $obj = jacObj();
+    if ($obj->logout(U('Index/takeJacLogout'))) {
+        session('jaUsername', null);
+        session('jaLogin', null);
+    } else {
+        die('jacLogout Error');
     }
 }

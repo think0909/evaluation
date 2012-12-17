@@ -77,7 +77,24 @@ class IndexAction extends Action
 
     public function takeJacLogin()
     {
-        $GradeAction = A('Grade');
-        $GradeAction->detail('1110339043');
+        //login
+        jacLogin();
+        if ($id = jacGetUser()) {
+            $student = D('Student');
+            if ($student->find($id)) {
+                $GradeAction = A('Grade');
+                $GradeAction->detail($id);
+            } else {
+                $this->error('系统中没有该学生的信息', U('Index/takeJacLogout'));
+            }
+        } else {
+            $this->error('未知错误', U('Index/takeJacLogout'));
+        }
+    }
+
+    public function takeJacLogout()
+    {
+        jacLogout();
+        $this->success('退出成功！谢谢使用', U('Index/login'));
     }
 }
