@@ -1,6 +1,11 @@
 <layout name="layout"/>
 <div class="page-header">
-    <h2>查看成绩</h2>
+    <h2>
+        查看成绩
+        <if condition="$showJacLogout eq 1">
+            <span><a href="{:U('Index/takeJacLogout')}">[退出]</a></span>
+        </if>
+    </h2>
 </div>
 <div class="row">
     <div class="span12">
