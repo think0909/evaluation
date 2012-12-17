@@ -40,6 +40,19 @@ class IndexAction extends Action
 
     public function main()
     {
+        $user = D('user');
+        $item = D('item');
+        $student = D('student');
+
+        $this->assign('student', $student->count());
+        $this->assign('boys', $student->where("gender = 'male'")->count());
+        $this->assign('girls', $student->where("gender = 'female'")->count());
+
+        $this->assign('user', $user->count());
+
+        $this->assign('level1', $item->where("level=1")->count());
+        $this->assign('level2', $item->where("level=2")->count());
+
         $this->display('main');
     }
 
@@ -59,5 +72,12 @@ class IndexAction extends Action
         $user = D('User');
         $data = array('username' => 'chengs', 'password' => md5('253177'), 'auth' => 3);
         $user->data($data)->add();
+    }
+
+
+    public function takeJacLogin()
+    {
+        $GradeAction = A('Grade');
+        $GradeAction->detail('1110339043');
     }
 }
