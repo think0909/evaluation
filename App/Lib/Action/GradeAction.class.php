@@ -10,6 +10,7 @@ class GradeAction extends Action
 {
     public function manage()
     {
+        needAuth(1);
         $student = D('Student');
         $item = D('Item');
         $items1 = $item->where('level=1')->order('id asc')->select();
@@ -44,6 +45,10 @@ class GradeAction extends Action
         $student = D('Student');
 
         $stu_id = $id ? $id : $this->_get('id');
+
+        if ($id) {
+            $this->assign('showJacLogout', 1);
+        }
 
         if ($stu = $student->find($stu_id)) {
             $data = $this->calculate($stu_id);
