@@ -91,3 +91,43 @@ function checkAuth()
         return 0;
     }
 }
+
+//jaccount 系列函数
+//jaccount class file
+load('@.clsJAccount');
+/*
+ jaccount 系列函数
+ */
+function jacObj()
+{
+    $jam = new JAccountManager('jaourhome05303', 'E:\JAccount');
+    return $jam;
+}
+
+//登录
+function jacLogin()
+{
+    if (!jacGetUser()) {
+        $obj = jacObj();
+        $ht = $obj->checkLogin(U('Index/takeJacLogin'));
+        if (($ht != NULL) && ($obj->hasTicketInURL)) {
+            $obj->redirectWithoutTicket();
+        }
+
+        if ($ht['ja3rdpartySessionID'] == session_id()) {
+            session('jaUsername', $ht['uid'] . '_' . $ht['id']);
+            session('jaLogin', 1);
+        } else {
+            exit('jalogin error');
+        }
+    }
+}
+
+function jacGetUser()
+{
+    if (session('?jaLogin') && session('?jaUsername') && session('jaLogin') == 1) {
+        return session('jaUsername');
+    } else {
+        return FALSE;
+    }
+}

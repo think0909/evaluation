@@ -39,11 +39,11 @@ class GradeAction extends Action
         $this->display();
     }
 
-    public function detail()
+    public function detail($id = false)
     {
         $student = D('Student');
 
-        $stu_id = $this->_get('id');
+        $stu_id = $id ? $id : $this->_get('id');
 
         if ($stu = $student->find($stu_id)) {
             $data = $this->calculate($stu_id);
@@ -52,7 +52,7 @@ class GradeAction extends Action
             $this->assign('point', $data['point']);
             $this->assign('student', $stu);
 
-            $this->display();
+            $this->display('Grade:detail');
         } else {
             $this->error('学生信息不存在', U('Grade/manage'));
         }
