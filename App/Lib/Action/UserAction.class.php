@@ -10,6 +10,7 @@ class UserAction extends Action
 {
     public function manage()
     {
+        needAuth(3);
         $user = D('User');
 
         $data = $user->select();
@@ -19,6 +20,7 @@ class UserAction extends Action
 
     public function add()
     {
+        needAuth(3);
         $user = D('User');
 
         if ($user->create()) {
@@ -34,6 +36,7 @@ class UserAction extends Action
 
     public function edit()
     {
+        needAuth(3);
         $user = D('User');
         if ($user->create()) {
             if ($user->save()) {
@@ -48,6 +51,7 @@ class UserAction extends Action
 
     public function del()
     {
+        needAuth(3);
         $user = D('User');
         $id = $this->_get('id');
         if ($id && $user->find($id)) {

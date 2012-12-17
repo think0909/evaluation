@@ -10,6 +10,7 @@ class StudentAction extends Action
 {
     public function manage()
     {
+        needAuth(1);
         $student = D('Student');
 
         $search = $this->_post('search');
@@ -42,6 +43,7 @@ class StudentAction extends Action
 
     public function add()
     {
+        needAuth(1);
         $student = D('Student');
 
         if ($student->create()) {
@@ -57,6 +59,7 @@ class StudentAction extends Action
 
     public function edit()
     {
+        needAuth(1);
         $student = D('Student');
         if ($student->create()) {
             if ($student->save()) {
@@ -71,6 +74,7 @@ class StudentAction extends Action
 
     public function del()
     {
+        needAuth(1);
         $student = D('Student');
         $id = $this->_get('id');
         if ($id && $student->find($id)) {
@@ -86,6 +90,7 @@ class StudentAction extends Action
 
     public function upload()
     {
+        needAuth(1);
         import('ORG.Net.UploadFile');
         $upload = new UploadFile(); // 实例化上传类
         $upload->maxSize = 3145728; // 设置附件上传大小

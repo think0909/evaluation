@@ -10,6 +10,7 @@ class ItemAction extends Action
 {
     public function manage()
     {
+        needAuth(2);
         $model = D('Item');
 
         $level1 = $model->where(array('level' => 1))->order('id asc')->select();
@@ -87,6 +88,7 @@ class ItemAction extends Action
     //删除项目
     public function delete()
     {
+        needAuth(2);
         $id = $this->_get('id');
         if ($id && is_numeric($id)) {
             $model = D('Item');
@@ -122,6 +124,7 @@ class ItemAction extends Action
 
     public function editWeight()
     {
+        needAuth(2);
         $model = D('Weight');
         if ($model->create()) {
             $weight = M('Weight');
@@ -168,6 +171,7 @@ class ItemAction extends Action
 
     public function add()
     {
+        needAuth(2);
         $data = array();
 
         $data['title'] = $this->_post('title');
@@ -191,6 +195,7 @@ class ItemAction extends Action
 
     public function edit()
     {
+        needAuth(2);
         $data = array();
 
         $data['id'] = $this->_post('id');

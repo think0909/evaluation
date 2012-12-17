@@ -92,6 +92,13 @@ function checkAuth()
     }
 }
 
+function needAuth($auth = 1)
+{
+    if (checkAuth() < $auth) {
+        exit('权限不够');
+    }
+}
+
 //jaccount 系列函数
 //jaccount class file
 load('@.clsJAccount');

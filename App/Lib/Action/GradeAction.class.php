@@ -101,6 +101,7 @@ class GradeAction extends Action
 
     public function input()
     {
+        needAuth(1);
         $grade = D("Grade");
         $item = D("Item");
         $items1 = $item->where('level=2')->order('id asc')->select();
@@ -111,6 +112,7 @@ class GradeAction extends Action
 
     public function add()
     {
+        needAuth(1);
         $student = D('Student');
         $student_id = $this->_post('studentid');
         if (!$student->find($student_id)) {
@@ -149,6 +151,7 @@ class GradeAction extends Action
     //上传成绩处理
     public function upload()
     {
+        needAuth(1);
         import('ORG.Net.UploadFile');
         $upload = new UploadFile(); // 实例化上传类
         $upload->maxSize = 3145728; // 设置附件上传大小
