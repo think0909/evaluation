@@ -35,7 +35,13 @@
             </if>
         </ul>
         <ul class="nav pull-right">
-            <li><a href="{:U('Index/takeLogout')}">退出</a></li>
+            <if condition="checkAuth() egt 1">
+                <li><a href="#">当前存储库：{:C('SITE_current_storage')}</a></li>
+            </if>
+            <if condition="checkAuth() egt 3">
+                <li><a href="{:U('Index/config')}"><i class="icon-wrench"></i>系统设定</a></li>
+            </if>
+            <li><a href="{:U('Index/takeLogout')}"><i class="icon-off"></i>退出</a></li>
         </ul>
     </div>
 </div>
