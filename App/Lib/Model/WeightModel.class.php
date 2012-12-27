@@ -8,6 +8,22 @@
  */
 class WeightModel extends Model
 {
+    public function setTableName($name)
+    {
+        $this->trueTableName = $name;
+        return $this;
+    }
+
+    public function getTableName()
+    {
+        if ($this->trueTableName) {
+            return parent::getTableName();
+        } else {
+            $this->trueTableName = parent::getTableName() . '_' . C('SITE_current_storage');
+            return $this->trueTableName;
+        }
+    }
+
     protected $_validate = array(
         array('fromid', 'require', '请输入From_id'),
         array('toid', 'require', '请输入To_id'),

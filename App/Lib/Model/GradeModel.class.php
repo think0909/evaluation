@@ -8,6 +8,22 @@
  */
 class GradeModel extends Model
 {
+    public function setTableName($name)
+    {
+        $this->trueTableName = $name;
+        return $this;
+    }
+
+    public function getTableName()
+    {
+        if ($this->trueTableName) {
+            return parent::getTableName();
+        } else {
+            $this->trueTableName = parent::getTableName() . '_' . C('SITE_current_storage');
+            return $this->trueTableName;
+        }
+    }
+
     protected $_validate = array(
         array('itemid', 'require', '请输入项目编号'),
         array('studentid', 'require', '请输入学号'),

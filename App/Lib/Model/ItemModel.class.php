@@ -14,4 +14,21 @@ class ItemModel extends Model
         array('level', 'require', '必须填所属层次（1、2）'),
         array('parentid', 'require', '必须填所属项目'),
     );
+
+
+    public function setTableName($name)
+    {
+        $this->trueTableName = $name;
+        return $this;
+    }
+
+    public function getTableName()
+    {
+        if ($this->trueTableName) {
+            return parent::getTableName();
+        } else {
+            $this->trueTableName = parent::getTableName() . '_' . C('SITE_current_storage');
+            return $this->trueTableName;
+        }
+    }
 }
