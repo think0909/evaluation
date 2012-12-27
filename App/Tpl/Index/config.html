@@ -1,0 +1,79 @@
+<layout name="layout"/>
+
+<div class="page-header">
+    <h2>系统设定</h2>
+</div>
+<div class="row">
+    <div class="span12">
+        <form class="form-horizontal" method="post" action="{:U('Index/takeConfig')}">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label">当前存储库</label>
+
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="current_storage" value="1" {$current_storage_1_checked} > 1
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="current_storage" value="2" {$current_storage_2_checked} > 2
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="current_storage" value="3" {$current_storage_3_checked} > 3
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="current_storage" value="4" {$current_storage_4_checked} > 4
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="current_storage" value="5" {$current_storage_5_checked} > 5
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">存储库参数</label>
+
+                    <div class="controls">
+                        <table style="width:420px;" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="span1">编号</th>
+                                <th class="">名称</th>
+                                <th class="span1">权重</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <for start="1" end="6">
+                                <tr>
+                                    <td>{$i}</td>
+                                    <td><input name="storage_{$i}_name" value="{$storage_name[$i]}" type="text"></td>
+                                    <td><input name="storage_{$i}_weight" value="{$storage_weight[$i]}" class="span1"
+                                               type="number"></td>
+                                </tr>
+                            </for>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">计算模式</label>
+
+                    <div class="controls">
+                        <label class="radio inline span2">
+                            <input type="radio" name="calculate_mode" value="single" {$calculate_mode_single_checked} >
+                            当前存储库
+                        </label>
+                        <label class="radio inline span2">
+                            <input type="radio" name="calculate_mode" value="multiple"
+                            {$calculate_mode_multiple_checked} > 全部存储库
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                        <button type="submit" class="btn">重填</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

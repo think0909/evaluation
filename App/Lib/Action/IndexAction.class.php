@@ -97,4 +97,34 @@ class IndexAction extends Action
         jacLogout();
         $this->success('退出成功！谢谢使用', U('Index/login'));
     }
+
+    public function takeConfig()
+    {
+        needAuth(3);
+        $model = D('Config');
+        foreach ($_POST as $key => $value) {
+            if ($value) {
+                $model->where(array('key' => $key))->delete();
+                $model->data(array('key' => $key, 'value' => $value))->add();
+            }
+        }
+        $this->config();
+    }
+
+    public function config()
+    {
+        needAuth(3);
+        $storage_name = array();
+        $storage_weight = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $this->assign('current_storage_' . $i . '_checked', (C('SITE_current_storage') == $i) ? 'checked' : '');
+            $storage_name[$i] = C('SITE_storage_' . $i . '_name');
+            $storage_weight[$i] = C('SITE_storage_' . $i . '_weight');
+        }
+        $this->assign('storage_name', $storage_name);
+        $this->assign('storage_weight', $storage_weight);
+        $this->assign('calculate_mode_single_checked', C('SITE_calculate_mode') == 'single' ? 'checked' : '');
+        $this->assign('calculate_mode_multiple_checked', C('SITE_calculate_mode') == 'multiple' ? 'checked' : '');
+        $this->display('Index:config');
+    }
 }
