@@ -8,43 +8,36 @@
     </h2>
 </div>
 <div class="row">
-    <div class="span12">
-        <div class="row">
-            <div class="span6">
-                <dl>
-                    <dt>姓名</dt>
-                    <dd>{$student.name}</dd>
-                    <dt>班级</dt>
-                    <dd>{$student.class}</dd>
-                    <dt>学号</dt>
-                    <dd>{$student.id}</dd>
-                </dl>
-            </div>
+    <div class="span3">姓名：{$student.name}</div>
+    <div class="span3">学号：{$student.id}</div>
+    <div class="span3">班级：{$student.class}</div>
+    <div class="span2">性别：{$student.gender}</div>
 
-            <div class="span6">
-                <h3 class="text-warning">总分：{$point|displayWeight}</h3>
-            </div>
-        </div>
-    </div>
-
-
-    <foreach name="data" item="level1">
-        <div class="span4">
-            <h5 class="text-info">{$level1.title}
-                <lable class="label label-info">{$level1.weight|displayWeight}</lable>
-            </h5>
-
-            <p>得分：{$level1.point|displayWeight}</p>
-
-            <p>分项得分：</p>
-            <ol>
-                <foreach name="level1.subItems" item="level2">
-                    <li>{$level2.title}
-                        <lable class="label label-important">{$level2.weight|displayWeight}</lable>
-                        -{$level2.point}
-                    </li>
-                </foreach>
-            </ol>
-        </div>
-    </foreach>
+    <div class="span12"><h4 class="text-info">总分：{$total|displayWeight}</h4></div>
 </div>
+<volist name="storage" id="s">
+    <h4>{$s.name}<label class="label label-important">{$s.weight|displayWeight}</label> 得分：{$s.data.point|displayWeight}
+    </h4>
+
+    <div class="row">
+        <foreach name="s.data.details" item="level1">
+            <div class="span3">
+                <h5 class="text-info">{$level1.title}
+                    <lable class="label label-info">{$level1.weight|displayWeight}</lable>
+                </h5>
+
+                <p>得分：{$level1.point|displayWeight}</p>
+
+                <p>分项得分：</p>
+                <ol>
+                    <foreach name="level1.subItems" item="level2">
+                        <li>{$level2.title}
+                            <lable class="label label-important">{$level2.weight|displayWeight}</lable>
+                            -{$level2.point}
+                        </li>
+                    </foreach>
+                </ol>
+            </div>
+        </foreach>
+    </div>
+</volist>

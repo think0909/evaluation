@@ -108,7 +108,7 @@ class IndexAction extends Action
                 $model->data(array('key' => $key, 'value' => $value))->add();
             }
         }
-        $this->config();
+        $this->success('已修改！', U('Index/config'));
     }
 
     public function config()

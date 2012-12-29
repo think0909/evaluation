@@ -4,6 +4,8 @@
 </div>
 <div class="row">
     <div class="span12">
+        <a href="{:U('Grade/export')}" role="button" class="btn btn-info">导出Excel</a>
+
         <form method='post' action="{:U('Grade/manage')}" class="form-search pull-right">
             <div class="input-append">
                 <input type="text" name="search" class="span2 search-query" value="{$search}">
@@ -22,7 +24,7 @@
 
                 <foreach name="items1" item="item">
                     <th><a href="#" rel="tooltip" data-placement="bottom"
-                           data-original-title="{$item.title}({$item.weight|displayWeight})">{$item.title|utf8substr=4}</a>
+                           data-original-title="{$item.title}({$item.weight|displayWeight})">{$item.id}</a>
                     </th>
                 </foreach>
 
@@ -38,9 +40,11 @@
                     <td>{$student.gender}</td>
                     <td>{$student.class}</td>
 
-                    <foreach name="student.details" item="item">
-                        <td>{$item.point|displayWeight}</td>
-                    </foreach>
+                    <td>{$student.point_1|displayWeight}</td>
+                    <td>{$student.point_2|displayWeight}</td>
+                    <td>{$student.point_3|displayWeight}</td>
+                    <td>{$student.point_4|displayWeight}</td>
+                    <td>{$student.point_5|displayWeight}</td>
                     <td>{$student.point|displayWeight}</td>
                     <td>
                         <a href="{:U('Grade/detail','id='.$student['id'])}" role="button" class="btn btn-info">详细信息</a>

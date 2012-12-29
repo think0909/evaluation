@@ -11,9 +11,7 @@ class GradeAction extends Action
     public function manage()
     {
         needAuth(1);
-        $student = D('Student');
-        $item = D('Item');
-        $items1 = $item->where('level=1')->order('id asc')->select();
+        $studentModel = D('Student');
         $data = array();
         $search = $this->_post('search');
         $condition = array();
@@ -26,14 +24,23 @@ class GradeAction extends Action
             $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
         }
 
-        $students = $student->where($condition)->select();
+        $students = $studentModel->where($condition)->select();
         $this->assign('search', $search);
 
-        foreach ($students as $s) {
-            $res = $this->calculate($s['id']);
-            $res = array_merge($res, $s);
-            $data[] = $res;
+        foreach ($students as &$s) {
+            $s['point'] = 0;
+            for ($i = 1; $i <= 5; $i++) {
+                $temp = $this->calculate($s['id'], $i);
+                $s['point_' . $i] = $temp['point'];
+                $s['point'] += C('SITE_storage_' . $i . '_weight') * $temp['point'];
+                unset($temp);
+            }
+            $data[] = $s;
             unset($res);
+        }
+        $items1 = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $items1[] = array('id' => $i, 'title' => C('SITE_storage_' . $i . '_name'), 'weight' => C('SITE_storage_' . $i . '_weight'));
         }
         $this->assign('items1', $items1);
         $this->assign('data', $data);
@@ -53,8 +60,22 @@ class GradeAction extends Action
         if ($stu = $student->find($stu_id)) {
             $data = $this->calculate($stu_id);
 
-            $this->assign('data', $data['details']);
-            $this->assign('point', $data['point']);
+            $total = 0;
+            $storage = array();
+            if (C('SITE_calculate_mode') == 'multiple') {
+                for ($i = 1; $i <= 5; $i++) {
+                    $temp = $this->calculate($stu_id, $i);
+                    $storage[] = array('name' => $i . ':' . C('SITE_storage_' . $i . '_name'), 'data' => $temp, 'weight' => C('SITE_storage_' . $i . '_weight'));
+                    $total += C('SITE_storage_' . $i . '_weight') * $temp['point'];
+                }
+            } else {
+                $i = C('SITE_current_storage');
+                $temp = $this->calculate($stu_id);
+                $storage[] = array('name' => $i . ':' . C('SITE_storage_' . $i . '_name'), 'data' => $temp, 'weight' => C('SITE_storage_' . $i . '_weight'));
+                $total = $temp['point'];
+            }
+            $this->assign('storage', $storage);
+            $this->assign('total', $total);
             $this->assign('student', $stu);
 
             $this->display('Grade:detail');
@@ -64,43 +85,89 @@ class GradeAction extends Action
 
     }
 
-    public function calculate($studentid)
+    public function itemdetail()
     {
-        $model = D('Item');
+        needAuth(1);
+        $itemModel = D('Item');
+        $studentModel = D('Student');
+        $itemlist = $itemModel->where('level=1')->order('id asc')->select();
+        foreach ($itemlist as &$level1) {
+            $level1['data'] = $itemModel->where(array('level' => 2, 'parentid' => $level1['id']))->order('id asc')->select();
+        }
+
+        if (!($item = $itemModel->find($this->_get('item')))) {
+            $item = $itemlist[0];
+        }
+
+        $student = $studentModel->order('id asc')->select();
+        foreach ($student as &$s) {
+            $s['grade'] = $this->getGrade($s['id'], $item['id']);
+        }
+
+        $this->assign('itemlist', $itemlist);
+        $this->assign('item', $item);
+        $this->assign('pointlist', $student);
+        $this->display('Grade:itemdetail');
+    }
+
+    public function calculate($studentid, $storage = '')
+    {
+        $itemModel = D('Item');
+        if ($storage) {
+            $itemModel->setTableName('item_' . $storage);
+        }
         $data = array('point' => 0);
         $data['details'] = array();
         //level 1
-        $items1 = $model->where('level=1')->order('id asc')->select();
+        $items1 = $itemModel->where('level=1')->order('id asc')->select();
         foreach ($items1 as $item) {
             //level 2
-            $items2 = $model->where(array('level' => 2, 'parentid' => $item['id']))->order('id asc')->select();
+            $items2 = $itemModel->where(array('level' => 2, 'parentid' => $item['id']))->order('id asc')->select();
             $level1 = array('id' => $item['id'], 'title' => $item['title'], 'weight' => $item['weight'], 'point' => 0);
             $level1['subItems'] = array();
             foreach ($items2 as $subitem) {
-                $point = $this->getGrade($studentid, $subitem['id']);
+                $point = $this->getGrade($studentid, $subitem['id'], $storage);
                 if ($subitem['weight'] && $subitem['weight'] > 0) {
                     $level1['point'] += $subitem['weight'] * $point;
-                    //dump($level1);
                 }
                 $level2 = array('id' => $subitem['id'], 'title' => $subitem['title'], 'weight' => $subitem['weight'], 'point' => $point);
                 $level1['subItems'][] = $level2;
             }
             $data['details'][] = $level1;
-            if ($item[weight] && $item['weight'] > 0) {
+            if ($item['weight'] && $item['weight'] > 0) {
                 $data['point'] += $level1['point'] * $item['weight'];
             }
         }
         return $data;
     }
 
-    public function getGrade($studentid, $itemid)
+    public function getGrade($studentid, $itemid, $storage = '')
     {
-        $model = D('Grade');
-        $res = $model->where(array('studentid' => $studentid, 'itemid' => $itemid))->find();
-        if ($res) {
-            return $res['point'];
+        $gradeModel = D('Grade');
+        $itemModel = D('Item');
+        if ($storage) {
+            $gradeModel->setTableName('grade_' . $storage);
+            $itemModel->setTableName('item_' . $storage);
+        }
+        $item = $itemModel->find($itemid);
+        if ($item['level'] == 2) {
+            $res = $gradeModel->where(array('studentid' => $studentid, 'itemid' => $itemid))->find();
+            if ($res) {
+                return $res['point'];
+            } else {
+                return 0;
+            }
         } else {
-            return 0;
+            //level 1
+            $items2 = $itemModel->where(array('level' => 2, 'parentid' => $item['id']))->select();
+            $sum = 0;
+            foreach ($items2 as $subitem) {
+                $point = $this->getGrade($studentid, $subitem['id']);
+                if ($subitem['weight'] && $subitem['weight'] > 0) {
+                    $sum += $subitem['weight'] * $point;
+                }
+            }
+            return $sum;
         }
     }
 

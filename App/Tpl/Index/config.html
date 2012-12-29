@@ -46,7 +46,7 @@
                                     <td>{$i}</td>
                                     <td><input name="storage_{$i}_name" value="{$storage_name[$i]}" type="text"></td>
                                     <td><input name="storage_{$i}_weight" value="{$storage_weight[$i]}" class="span1"
-                                               type="number"></td>
+                                               type="number" min="0" max="1" step="0.1"></td>
                                 </tr>
                             </for>
                             </tbody>

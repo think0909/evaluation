@@ -1,0 +1,51 @@
+<layout name="layout"/>
+<div class="page-header">
+    <h3>查看成绩</h3>
+</div>
+<div class="row">
+    <div class="span4">
+        <h5>项目列表</h5>
+        <ul>
+            <foreach name="itemlist" item="level1">
+                <li><a href="{:U('Grade/itemdetail','item='.$level1['id'])}">{$level1.title}</a></li>
+                <ol>
+                    <foreach name="level1.data" item="level2">
+                        <li><a href="{:U('Grade/itemdetail','item='.$level2['id'])}">{$level2.title}</a></li>
+                    </foreach>
+                </ol>
+            </foreach>
+        </ul>
+    </div>
+    <div class="span8">
+        <h5>成绩列表（项目:{$item.title}）</h5>
+        <table class="tablesorter table table-bordered">
+            <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>班级</th>
+                <th>性别</th>
+                <th>得分</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="pointlist" item="student">
+                <tr>
+                    <td>{$student.id}</td>
+                    <td>{$student.name}</td>
+                    <td>{$student.class}</td>
+                    <td>{$student.gender}</td>
+                    <td>{$student.grade|displayWeight}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+jQuery(document).ready(function ($) {
+    $('table').tablesorter({
+    })
+});
+</script>
