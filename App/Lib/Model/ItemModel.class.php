@@ -15,6 +15,10 @@ class ItemModel extends Model
         array('parentid', 'require', '必须填所属项目'),
     );
 
+    protected $_auto = array(
+        array('full', 1)
+    );
+
 
     public function setTableName($name)
     {

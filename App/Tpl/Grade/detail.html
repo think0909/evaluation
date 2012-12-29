@@ -30,14 +30,19 @@
 
     <foreach name="data" item="level1">
         <div class="span4">
-            <h5 class="text-info">{$level1.title}</h5>
+            <h5 class="text-info">{$level1.title}
+                <lable class="label label-info">{$level1.weight|displayWeight}</lable>
+            </h5>
 
-            <p>权重：{$level1.weight|displayWeight}，得分：{$level1.point|displayWeight}</p>
+            <p>得分：{$level1.point|displayWeight}</p>
 
             <p>分项得分：</p>
             <ol>
                 <foreach name="level1.subItems" item="level2">
-                    <li>{$level2.title}-{$level2.point}({$level2.weight|displayWeight})</li>
+                    <li>{$level2.title}
+                        <lable class="label label-important">{$level2.weight|displayWeight}</lable>
+                        -{$level2.point}
+                    </li>
                 </foreach>
             </ol>
         </div>
