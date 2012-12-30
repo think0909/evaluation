@@ -47,7 +47,8 @@
                     <td>{$student.point_5|displayWeight}</td>
                     <td>{$student.point|displayWeight}</td>
                     <td>
-                        <a href="{:U('Grade/detail','id='.$student['id'])}" role="button" class="btn btn-info">详细信息</a>
+                        <a href="{:U('Grade/detail','id='.$student['id'])}" role="button"
+                           class="btn btn-info hide">详细信息</a>
                     </td>
                 </tr>
             </foreach>
