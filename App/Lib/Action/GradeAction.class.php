@@ -50,16 +50,12 @@ class GradeAction extends Action
     public function detail($id = false)
     {
         $student = D('Student');
-
         $stu_id = $id ? $id : $this->_get('id');
-
-        if ($id) {
+        if (jacGetUser()) {
             $this->assign('showJacLogout', 1);
         }
 
         if ($stu = $student->find($stu_id)) {
-            $data = $this->calculate($stu_id);
-
             $total = 0;
             $storage = array();
             if (C('SITE_calculate_mode') == 'multiple') {
