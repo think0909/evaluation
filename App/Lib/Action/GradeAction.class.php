@@ -95,7 +95,20 @@ class GradeAction extends Action
             $item = $itemlist[0];
         }
 
-        $student = $studentModel->order('id asc')->select();
+        $search = $this->_post('search');
+        $condition = array();
+
+        if ($search) {
+            $spilt = explode(' ', $search);
+            foreach ($spilt as &$value) {
+                $value = "%$value%";
+            }
+            $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
+        }
+
+        $this->assign('search', $search);
+
+        $student = $studentModel->where($condition)->order('id asc')->select();
         foreach ($student as &$s) {
             $s['grade'] = $this->getGrade($s['id'], $item['id']);
         }
@@ -276,11 +289,112 @@ class GradeAction extends Action
 
     public function export()
     {
+        needAuth(1);
+        $studentModel = D('Student');
+        $data = array();
+        $search = $this->_get('search');
+        $condition = array();
 
+        if ($search) {
+            $spilt = explode(' ', $search);
+            foreach ($spilt as &$value) {
+                $value = "%$value%";
+            }
+            $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
+        }
+
+        $students = $studentModel->where($condition)->select();
+
+        foreach ($students as &$s) {
+            $s['point_sum'] = 0;
+            for ($i = 1; $i <= 5; $i++) {
+                $temp = $this->calculate($s['id'], $i);
+                $s['point_' . $i] = $temp['point'];
+                $s['point_sum'] += C('SITE_storage_' . $i . '_weight') * $temp['point'];
+                unset($temp);
+            }
+            $data[] = $s;
+            unset($res);
+        }
+        $items1 = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $items1[] = array('id' => $i, 'title' => C('SITE_storage_' . $i . '_name'), 'weight' => C('SITE_storage_' . $i . '_weight'));
+        }
+
+        $this->toExcel("成绩大表(搜索条件：$search)", $data);
     }
 
     public function exportdetaillist()
     {
+        needAuth(1);
+        $itemModel = D('Item');
+        $studentModel = D('Student');
+        $itemlist = $itemModel->where('level=1')->order('id asc')->select();
+        foreach ($itemlist as &$level1) {
+            $level1['data'] = $itemModel->where(array('level' => 2, 'parentid' => $level1['id']))->order('id asc')->select();
+        }
+
+        if (!($item = $itemModel->find($this->_get('item')))) {
+            $item = $itemlist[0];
+        }
+
+        $search = $this->_get('search');
+        $condition = array();
+
+        if ($search) {
+            $spilt = explode(' ', $search);
+            foreach ($spilt as &$value) {
+                $value = "%$value%";
+            }
+            $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
+        }
+
+
+        $student = $studentModel->where($condition)->order('id asc')->select();
+        foreach ($student as &$s) {
+            $s['grade'] = $this->getGrade($s['id'], $item['id']);
+        }
+
+        $this->toExcel("成绩分表（项目：$item[title] 搜索条件：$search）", $student);
+    }
+
+    public function toExcel($title, $arr)
+    {
+        //PHPExcel初始化
+        Vendor("PHPExcel.PHPExcel");
+        $objPHPExcel = new PHPExcel();
+        // Set properties
+        $objPHPExcel->getProperties()->setCreator("SJTU")->setLastModifiedBy("SJTU")->setTitle($title)->setSubject($title);
+        //处理数据
+
+        if (is_array($arr) && count($arr)) {
+            $word = 'A';
+            foreach ($arr[0] as $key => $value) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($word++ . 1, $key);
+            }
+            $line = 2;
+            foreach ($arr as $data) {
+                //输出到PHPExcel
+                $word = "A";
+                foreach ($data as $key => $value) {
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($word++ . $line, $value);
+                }
+                $line++;
+            }
+        }
+
+
+        //输出到文件
+        // Redirect output to a client’s web browser (Excel5)
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $title . '.xls"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        //PHPExcel 销毁
+        unset($objWriter);
+        unset($objPHPExcel);
 
     }
 }

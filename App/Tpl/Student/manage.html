@@ -28,6 +28,7 @@
                 <th>姓名</th>
                 <th class="span2">学号</th>
                 <th class="span2">班级</th>
+                <th class="span2">专业</th>
                 <th class="span1">性别</th>
                 <th class="span3">功能</th>
             </tr>
@@ -38,13 +39,15 @@
                     <td>{$stu.name}</td>
                     <td>{$stu.id}</td>
                     <td>{$stu.class}</td>
+                    <td>{$stu.pro}</td>
                     <td>{$stu.gender}</td>
                     <td>
                         <div class="btn-group">
                             <a href="{:U('Grade/detail','id='.$stu[id])}" role="button" class="btn">查看成绩</a>
                             <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
                                     data-class="{$stu.class}" data-gender={$stu.gender}
-                                    data-name='{$stu.name}' data-target='#editStudentDiv' data-id={$stu.id}>编辑
+                                    data-name='{$stu.name}' data-pro='{$stu.pro}' data-target='#editStudentDiv'
+                                    data-id={$stu.id}>编辑
                             </button>
                             <a href="{:U('Student/del','id='.$stu['id'])}" role="button" class="btn btn-danger">删除</a>
                         </div>
@@ -85,6 +88,13 @@
 
                 <div class="controls">
                     <input type="text" name="class">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">专业</label>
+
+                <div class="controls">
+                    <input type="text" name="pro">
                 </div>
             </div>
             <div class="control-group">
@@ -136,6 +146,13 @@
 
                 <div class="controls">
                     <input type="text" name="class">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">专业</label>
+
+                <div class="controls">
+                    <input type="text" name="pro">
                 </div>
             </div>
             <div class="control-group">
@@ -194,16 +211,18 @@ $(document).ready(function () {
         var stu_name = $(btn).attr('data-name');
         var stu_gender = $(btn).attr('data-gender');
         var stu_class = $(btn).attr('data-class');
+        var stu_pro = $(btn).attr('data-pro');
 
         form.find('input[name=id]').val(stu_id);
         form.find('input[name=name]').val(stu_name);
         form.find('input[name=class]').val(stu_class);
+        form.find('input[name=pro]').val(stu_pro);
         form.find('input[name=gender]').val(stu_gender)
     });
     //table sorter
     $('table#studentList').tablesorter({
         headers:{
-            4:{
+            5:{
                 sorter:false
             }
         }

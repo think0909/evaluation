@@ -118,6 +118,7 @@ class StudentAction extends Action
                     $data['name'] = $line['B'];
                     $data['gender'] = $line['C'];
                     $data['class'] = $line['D'];
+                    $data['pro'] = $line['E'];
                     if ($model->create($data)) {
                         if ($model->add()) {
                             $result[] = "[成功]学号：$data[id]";

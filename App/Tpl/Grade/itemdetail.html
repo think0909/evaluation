@@ -17,8 +17,18 @@
         </ul>
     </div>
     <div class="span9">
-        <h5>成绩列表（项目:{$item.title}）<a href="{:U('Grade/exportdetaillist','item='.$item['id'])}" role="button"
-                                     class="btn btn-info hide">导出</a></h5>
+        <h5>成绩列表（项目:{$item.title}）
+            <a href="{:U('Grade/exportdetaillist','item='.$item['id'].'&search='.$search)}" role="button"
+               class="btn btn-info">导出</a>
+
+            <form method='post' action="{:U('Grade/itemdetail','item='.$level1['id'])}" class="form-search pull-right">
+                <div class="input-append">
+                    <input type="text" name="search" class="span2 search-query" value="{$search}">
+                    <button type="submit" class="btn"><i class="icon-search"></i>搜索</button>
+                </div>
+            </form>
+        </h5>
+
         <table class="tablesorter table table-bordered">
             <thead>
             <tr>
