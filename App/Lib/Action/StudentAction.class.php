@@ -23,8 +23,13 @@ class StudentAction extends Action
             }
             $condition['id|name|class'] = array('like', $spilt, 'OR');
         }
+        $year = $this->_get('year');
+        if ($year && is_numeric($year)) {
+            $condition['id'] = array('like', "5$year%");
+        }
 
         $data = $student->where($condition)->select();
+        $this->assign('year', $year);
         $this->assign('search', $search);
         $this->assign('students', $data);
         $this->display();

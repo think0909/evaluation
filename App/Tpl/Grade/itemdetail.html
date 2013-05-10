@@ -22,6 +22,20 @@
                class="btn btn-info">导出</a>
 
             <form method='post' action="{:U('Grade/itemdetail','item='.$level1['id'])}" class="form-search pull-right">
+                <div class="input-prepend">
+                    <label for="year">年级</label>
+                    <select name="year" class="span2" id="year">
+                        <option value="" selected>--选择年级--</option>
+                        <option value="08">2008</option>
+                        <option value="09">2009</option>
+                        <option value="10">2010</option>
+                        <option value="11">2011</option>
+                        <option value="12">2012</option>
+                        <option value="13">2013</option>
+                        <option value="14">2014</option>
+                    </select>
+                </div>
+                &nbsp;&nbsp;
                 <div class="input-append">
                     <input type="text" name="search" class="span2 search-query" value="{$search}">
                     <button type="submit" class="btn"><i class="icon-search"></i>搜索</button>
@@ -60,5 +74,16 @@
 jQuery(document).ready(function ($) {
     $('table').tablesorter({
     })
+});
+
+$('#year').val('{$year}');
+//year
+$('#year').change(function () {
+    var year = $(this).val();
+    if (year) {
+        window.location = "{:U('Grade/itemdetail')}" + "&year=" + year;
+    } else {
+        window.location = "{:U('Grade/itemdetail')}";
+    }
 });
 </script>

@@ -13,16 +13,31 @@
             批量导入学生信息
         </button>
         <form method='post' action="{:U('Student/manage')}" class="form-search pull-right">
+            <div class="input-prepend">
+                <label for="year">年级</label>
+                <select name="year" class="span2" id="year">
+                    <option value="" selected>--选择年级--</option>
+                    <option value="08">2008</option>
+                    <option value="09">2009</option>
+                    <option value="10">2010</option>
+                    <option value="11">2011</option>
+                    <option value="12">2012</option>
+                    <option value="13">2013</option>
+                    <option value="14">2014</option>
+                </select>
+            </div>
+            &nbsp;&nbsp;
             <div class="input-append">
                 <input type="text" name="search" class="span2 search-query" value="{$search}">
                 <button type="submit" class="btn"><i class="icon-search"></i>搜索</button>
             </div>
         </form>
+
     </div>
 </div>
 <div class="row">
     <div class="span12">
-        <table id="studentList" class="tablesorter table table-bordered table-hover">
+        <table id="studentList" class="tablesorter table table-bordered table-hover bordered-table zebra-striped">
             <thead>
             <tr>
                 <th>姓名</th>
@@ -200,7 +215,6 @@
     </div>
 </div>
 
-
 <script>
 $(document).ready(function () {
     //edit bind
@@ -239,6 +253,17 @@ $(document).ready(function () {
     })
     $('#infoImportSubmitBtn').click(function () {
         $('#infoImportForm').submit();
-    })
+    });
+
+    $('#year').val('{$year}');
+    //year
+    $('#year').change(function () {
+        var year = $(this).val();
+        if (year) {
+            window.location = "{:U('Student/manage')}" + "&year=" + year;
+        } else {
+            window.location = "{:U('Student/manage')}";
+        }
+    });
 })
 </script>

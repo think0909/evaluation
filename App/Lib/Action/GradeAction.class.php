@@ -24,6 +24,12 @@ class GradeAction extends Action
             $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
         }
 
+        $year = $this->_get('year');
+        if ($year && is_numeric($year)) {
+            $condition['id'] = array('like', "5$year%");
+        }
+        $year = $this->_get('year');
+
         $students = $studentModel->where($condition)->select();
         $this->assign('search', $search);
 
@@ -105,7 +111,12 @@ class GradeAction extends Action
             }
             $condition['id|name|class|gender'] = array('like', $spilt, 'OR');
         }
+        $year = $this->_get('year');
+        if ($year && is_numeric($year)) {
+            $condition['id'] = array('like', "5$year%");
+        }
 
+        $this->assign('year', $year);
         $this->assign('search', $search);
 
         $student = $studentModel->where($condition)->order('id asc')->select();
