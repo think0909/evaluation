@@ -16,8 +16,7 @@
  * @subpackage  Crypt
  * @author    cevin <cevin1991@gmail.com>
  */
-class Hmac
-{
+class Hmac {
 
     /**
      * SHA1加密
@@ -26,24 +25,23 @@ class Hmac
      * @param string $str 字符串
      * @return string
      */
-    public static function sha1($key, $str)
-    {
-        $blocksize = 64;
-        $hashfunc = 'sha1';
-        if (strlen($key) > $blocksize)
-            $key = pack('H*', $hashfunc($key));
-        $key = str_pad($key, $blocksize, chr(0x00));
-        $ipad = str_repeat(chr(0x36), $blocksize);
-        $opad = str_repeat(chr(0x5c), $blocksize);
+	public static function sha1($key,$str) {
+        $blocksize=64;
+        $hashfunc='sha1';
+        if (strlen($key)>$blocksize)
+            $key=pack('H*', $hashfunc($key));
+        $key=str_pad($key,$blocksize,chr(0x00));
+        $ipad=str_repeat(chr(0x36),$blocksize);
+        $opad=str_repeat(chr(0x5c),$blocksize);
         $hmac = pack(
-            'H*', $hashfunc(
-                ($key ^ $opad) . pack(
-                    'H*', $hashfunc(
-                        ($key ^ $ipad) . $str
+                    'H*',$hashfunc(
+                        ($key^$opad).pack(
+                            'H*',$hashfunc(
+                                ($key^$ipad).$str
+                            )
+                        )
                     )
-                )
-            )
-        );
+                );
         return $hmac;
     }
 
@@ -54,20 +52,19 @@ class Hmac
      * @param string $str 字符串
      * @return string
      */
-    public static function md5($key, $str)
-    {
+	public static function md5($key, $str) {
         $b = 64;
         if (strlen($key) > $b) {
-            $key = pack("H*", md5($key));
+            $key = pack("H*",md5($key));
         }
 
         $key = str_pad($key, $b, chr(0x00));
         $ipad = str_pad('', $b, chr(0x36));
         $opad = str_pad('', $b, chr(0x5c));
-        $k_ipad = $key ^ $ipad;
+        $k_ipad = $key ^ $ipad ;
         $k_opad = $key ^ $opad;
 
-        return md5($k_opad . pack("H*", md5($k_ipad . $str)));
+        return md5($k_opad . pack("H*",md5($k_ipad . $str)));
     }
 
 }

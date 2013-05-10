@@ -16,8 +16,7 @@
  * @subpackage  Crypt
  * @author    liu21st <liu21st@gmail.com>
  */
-class Xxtea
-{
+class Xxtea {
 
     /**
      * 加密字符串
@@ -26,8 +25,7 @@ class Xxtea
      * @param string $key 加密key
      * @return string
      */
-    public static function encrypt($str, $key)
-    {
+    public static function encrypt($str, $key) {
         if ($str == "") {
             return "";
         }
@@ -62,8 +60,7 @@ class Xxtea
      * @param string $key 加密key
      * @return string
      */
-    public static function decrypt($str, $key)
-    {
+    public static function decrypt($str, $key) {
         if ($str == "") {
             return "";
         }
@@ -91,8 +88,7 @@ class Xxtea
         return self::long2str($v, true);
     }
 
-    private static function long2str($v, $w)
-    {
+    private static function long2str($v, $w) {
         $len = count($v);
         $s = array();
         for ($i = 0; $i < $len; $i++) {
@@ -100,14 +96,13 @@ class Xxtea
         }
         if ($w) {
             return substr(join('', $s), 0, $v[$len - 1]);
-        } else {
+        }else{
             return join('', $s);
         }
     }
 
-    private static function str2long($s, $w)
-    {
-        $v = unpack("V*", $s . str_repeat("\0", (4 - strlen($s) % 4) & 3));
+    private static function str2long($s, $w) {
+        $v = unpack("V*", $s. str_repeat("\0", (4 - strlen($s) % 4) & 3));
         $v = array_values($v);
         if ($w) {
             $v[count($v)] = strlen($s);
@@ -115,8 +110,7 @@ class Xxtea
         return $v;
     }
 
-    private static function int32($n)
-    {
+    private static function int32($n) {
         while ($n >= 2147483648) $n -= 4294967296;
         while ($n <= -2147483649) $n += 4294967296;
         return (int)$n;

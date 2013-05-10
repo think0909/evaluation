@@ -15,10 +15,10 @@
  * 1，是对规则进行认证，不是对节点进行认证。用户可以把节点当作规则名称实现对节点进行认证。
  *      $auth=new Authority();  $auth->getAuth('规则名称','用户id')
  * 2，可以同时对多条规则进行认证，并设置多条规则的关系（or或者and）
- *      $auth=new Authority();  $auth->getAuth('规则1,规则2','用户id','and')
+ *      $auth=new Authority();  $auth->getAuth('规则1,规则2','用户id','and') 
  *      第三个参数为and时表示，用户需要同时具有规则1和规则2的权限。 当第三个参数为or时，表示用户值需要具备其中一个条件即可。默认为or
  * 3，一个用户可以属于多个用户组(think_auth_group_access表 定义了用户所属用户组)。我们需要设置每个用户组拥有哪些规则(think_auth_group 定义了用户组权限)
- *
+ * 
  * 4，支持规则表达式。
  *      在think_auth_rule 表中定义一条规则时，如果type为1， condition字段就可以定义规则表达式。 如定义{score}>5  and {score}<100  表示用户的分数在5-100之间时这条规则才会通过。
  * @category ORG
@@ -68,8 +68,7 @@ CREATE TABLE `think_auth_group_access` (
 
  */
 
-class Authority
-{
+class Authority {
 
     //默认配置
     protected $_config = array(
@@ -78,11 +77,10 @@ class Authority
         'AUTH_GROUP' => 'think_auth_group', //用户组数据表名
         'AUTH_GROUP_ACCESS' => 'think_auth_group_access', //用户组明细表
         'AUTH_RULE' => 'think_auth_rule', //权限规则表
-        'AUTH_USER' => 'think_members' //用户信息表
+        'AUTH_USER' => 'think_members'//用户信息表
     );
 
-    public function __construct()
-    {
+    public function __construct() {
         if (C('AUTH_CONFIG')) {
             //可设置配置项 AUTH_CONFIG, 此配置项为数组。
             $this->_config = array_merge($this->_config, C('AUTH_CONFIG'));
@@ -90,8 +88,7 @@ class Authority
     }
 
     //获得权限$name 可以是字符串或数组或逗号分割， uid为 认证的用户id， $or 是否为or关系，为true是， name为数组，只要数组中有一个条件通过则通过，如果为false需要全部条件通过。
-    public function getAuth($name, $uid, $relation = 'or')
-    {
+    public function getAuth($name, $uid, $relation='or') {
         if (!$this->_config['AUTH_ON'])
             return true;
         $authList = $this->getAuthList($uid);
@@ -107,35 +104,33 @@ class Authority
             if (in_array($val, $name))
                 $list[] = $val;
         }
-        if ($relation == 'or' and !empty($list)) {
+        if ($relation=='or' and !empty($list)) {
             return true;
         }
         $diff = array_diff($name, $list);
-        if ($relation == 'and' and empty($diff)) {
+        if ($relation=='and' and empty($diff)) {
             return true;
         }
         return false;
     }
 
     //获得用户组，外部也可以调用
-    public function getGroups($uid)
-    {
+    public function getGroups($uid) {
         static $groups = array();
         if (!empty($groups[$uid]))
             return $groups[$uid];
-        $groups[$uid] = M()->table($this->_config['AUTH_GROUP_ACCESS'] . ' a')->where("a.uid='$uid'")->join($this->_config['AUTH_GROUP'] . " g on a.group_id=g.id")->select();
+        $groups[$uid] = M()->table($this->_config['AUTH_GROUP_ACCESS'] . ' a')->where("a.uid='$uid'")->join($this->_config['AUTH_GROUP']." g on a.group_id=g.id")->select();
         return $groups[$uid];
     }
 
     //获得权限列表
-    protected function getAuthList($uid)
-    {
+    protected function getAuthList($uid) {
         static $_authList = array();
         if (isset($_authList[$uid])) {
             return $_authList[$uid];
         }
-        if (isset($_SESSION['_AUTH_LIST_' . $uid])) {
-            return $_SESSION['_AUTH_LIST_' . $uid];
+        if(isset($_SESSION['_AUTH_LIST_'.$uid])){
+            return $_SESSION['_AUTH_LIST_'.$uid];
         }
         //读取用户所属用户组
         $groups = $this->getGroups($uid);
@@ -169,19 +164,17 @@ class Authority
             }
         }
         $_authList[$uid] = $authList;
-        if ($this->_config['AUTH_TYPE'] == 2) {
+        if($this->_config['AUTH_TYPE']==2){
             //session结果
-            $_SESSION['_AUTH_LIST_' . $uid] = $authList;
+            $_SESSION['_AUTH_LIST_'.$uid]=$authList;
         }
         return $authList;
     }
-
     //获得用户资料,根据自己的情况读取数据库
-    protected function getUserInfo($uid)
-    {
-        static $userinfo = array();
-        if (!isset($userinfo[$uid])) {
-            $userinfo[$uid] = M()->table($this->_config['AUTH_USER'])->find($uid);
+    protected function getUserInfo($uid) {
+        static $userinfo=array();
+        if(!isset($userinfo[$uid])){
+             $userinfo[$uid]=M()->table($this->_config['AUTH_USER'])->find($uid);
         }
         return $userinfo[$uid];
     }

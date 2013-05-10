@@ -16,8 +16,7 @@ define("BCCOMP_LARGER", 1);
  * @subpackage  Crypt
  * @author    liu21st <liu21st@gmail.com>
  */
-class Rsa
-{
+class Rsa {
 
     /**
      * 加密字符串
@@ -26,8 +25,7 @@ class Rsa
      * @param string $key 加密key
      * @return string
      */
-    public static function encrypt($message, $public_key, $modulus, $keylength)
-    {
+    public static function encrypt($message, $public_key, $modulus, $keylength) {
         $padded = self::add_PKCS1_padding($message, true, $keylength / 8);
         $number = self::binary_to_number($padded);
         $encrypted = self::pow_mod($number, $public_key, $modulus);
@@ -42,8 +40,7 @@ class Rsa
      * @param string $key 加密key
      * @return string
      */
-    public static function decrypt($message, $private_key, $modulus, $keylength)
-    {
+    public static function decrypt($message, $private_key, $modulus, $keylength) {
         $number = self::binary_to_number($message);
         $decrypted = self::pow_mod($number, $private_key, $modulus);
         $result = self::number_to_binary($decrypted, $keylength / 8);
@@ -51,8 +48,7 @@ class Rsa
         return self::remove_PKCS1_padding($result, $keylength / 8);
     }
 
-    function sign($message, $private_key, $modulus, $keylength)
-    {
+    function sign($message, $private_key, $modulus, $keylength) {
         $padded = self::add_PKCS1_padding($message, false, $keylength / 8);
         $number = self::binary_to_number($padded);
         $signed = self::pow_mod($number, $private_key, $modulus);
@@ -60,22 +56,21 @@ class Rsa
         return $result;
     }
 
-    function verify($message, $public_key, $modulus, $keylength)
-    {
+    function verify($message, $public_key, $modulus, $keylength) {
         return decrypt($message, $public_key, $modulus, $keylength);
     }
 
-    function pow_mod($p, $q, $r)
-    {
+    function pow_mod($p, $q, $r) {
         // Extract powers of 2 from $q
         $factors = array();
         $div = $q;
         $power_of_two = 0;
-        while (bccomp($div, "0") == BCCOMP_LARGER) {
+        while(bccomp($div, "0") == BCCOMP_LARGER)
+        {
             $rem = bcmod($div, 2);
             $div = bcdiv($div, 2);
 
-            if ($rem) array_push($factors, $power_of_two);
+            if($rem) array_push($factors, $power_of_two);
             $power_of_two++;
         }
         // Calculate partial results for each factor, using each partial result as a
@@ -84,8 +79,10 @@ class Rsa
         $partial_results = array();
         $part_res = $p;
         $idx = 0;
-        foreach ($factors as $factor) {
-            while ($idx < $factor) {
+        foreach($factors as $factor)
+        {
+            while($idx < $factor)
+            {
                 $part_res = bcpow($part_res, "2");
                 $part_res = bcmod($part_res, $r);
 
@@ -95,7 +92,8 @@ class Rsa
         }
         // Calculate final result
         $result = "1";
-        foreach ($partial_results as $part_res) {
+        foreach($partial_results as $part_res)
+        {
             $result = bcmul($result, $part_res);
             $result = bcmod($result, $r);
         }
@@ -106,19 +104,22 @@ class Rsa
     // Function to add padding to a decrypted string
     // We need to know if this is a private or a public key operation [4]
     //--
-    function add_PKCS1_padding($data, $isPublicKey, $blocksize)
-    {
+    function add_PKCS1_padding($data, $isPublicKey, $blocksize) {
         $pad_length = $blocksize - 3 - strlen($data);
 
-        if ($isPublicKey) {
+        if($isPublicKey)
+        {
             $block_type = "\x02";
 
             $padding = "";
-            for ($i = 0; $i < $pad_length; $i++) {
+            for($i = 0; $i < $pad_length; $i++)
+            {
                 $rnd = mt_rand(1, 255);
                 $padding .= chr($rnd);
             }
-        } else {
+        }
+        else
+        {
             $block_type = "\x01";
             $padding = str_repeat("\xFF", $pad_length);
         }
@@ -129,33 +130,32 @@ class Rsa
     // Remove padding from a decrypted string
     // See [4] for more details.
     //--
-    function remove_PKCS1_padding($data, $blocksize)
-    {
+    function remove_PKCS1_padding($data, $blocksize) {
         assert(strlen($data) == $blocksize);
         $data = substr($data, 1);
 
         // We cannot deal with block type 0
-        if ($data{0} == '\0')
+    if($data{0} == '\0')
             die("Block type 0 not implemented.");
 
         // Then the block type must be 1 or 2
-        assert(($data{0} == "\x01") || ($data{0} == "\x02"));
+    assert(($data{0} == "\x01") || ($data{0} == "\x02"));
 
         // Remove the padding
-        $offset = strpos($data, "\0", 1);
+    $offset = strpos($data, "\0", 1);
         return substr($data, $offset + 1);
     }
 
     //--
     // Convert binary data to a decimal number
     //--
-    function binary_to_number($data)
-    {
+    function binary_to_number($data) {
         $base = "256";
         $radix = "1";
         $result = "0";
 
-        for ($i = strlen($data) - 1; $i >= 0; $i--) {
+        for($i = strlen($data) - 1; $i >= 0; $i--)
+        {
             $digit = ord($data{$i});
             $part_res = bcmul($digit, $radix);
             $result = bcadd($result, $part_res);
@@ -167,12 +167,12 @@ class Rsa
     //--
     // Convert a number back into binary form
     //--
-    function number_to_binary($number, $blocksize)
-    {
+    function number_to_binary($number, $blocksize) {
         $base = "256";
         $result = "";
         $div = $number;
-        while ($div > 0) {
+        while($div > 0)
+        {
             $mod = bcmod($div, $base);
             $div = bcdiv($div, $base);
 
