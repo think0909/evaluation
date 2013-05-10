@@ -127,11 +127,10 @@ class ItemAction extends Action
         needAuth(2);
         $model = D('Weight');
         if ($model->create()) {
-            $weight = M('Weight');
+            $weight = D('Weight');
             $condition = array('fromid' => $model->fromid, 'toid' => $model->toid);
-            if ($weight->where($condition)->find()) {
-                $weight->where($condition)->delete();
-            }
+            $weight->where($condition)->delete();
+
 
             if ($model->add()) {
                 $this->success('编辑成功！', U('Item/weight'));

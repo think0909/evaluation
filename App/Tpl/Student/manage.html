@@ -45,7 +45,7 @@
                         <div class="btn-group">
                             <a href="{:U('Grade/detail','id='.$stu[id])}" role="button" class="btn">查看成绩</a>
                             <button name="editStudentBtn" class="btn btn-info" data-toggle="modal"
-                                    data-class="{$stu.class}" data-gender={$stu.gender}
+                                    data-class="{$stu.class}" data-gender="{$stu.gender}"
                                     data-name='{$stu.name}' data-pro='{$stu.pro}' data-target='#editStudentDiv'
                                     data-id={$stu.id}>编辑
                             </button>
@@ -102,8 +102,8 @@
 
                 <div class="controls">
                     <select name='gender'>
-                        <option value="male">男</option>
-                        <option value="female">女</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
                     </select>
                 </div>
             </div>
@@ -160,8 +160,8 @@
 
                 <div class="controls">
                     <select name='gender'>
-                        <option value="male">男</option>
-                        <option value="female">女</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
                     </select>
                 </div>
             </div>
@@ -217,7 +217,7 @@ $(document).ready(function () {
         form.find('input[name=name]').val(stu_name);
         form.find('input[name=class]').val(stu_class);
         form.find('input[name=pro]').val(stu_pro);
-        form.find('input[name=gender]').val(stu_gender)
+        form.find('select[name=gender]').val(stu_gender)
     });
     //table sorter
     $('table#studentList').tablesorter({

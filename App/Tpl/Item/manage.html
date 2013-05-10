@@ -146,6 +146,8 @@
                     <textarea name="description"></textarea>
                 </div>
             </div>
+            <input type="hidden" name="full" value="100">
+
             <div class="control-group">
                 <label class="control-label">父级项目</label>
 
@@ -187,7 +189,7 @@ jQuery(function ($) {
         var me = this, btn = e.currentTarget, form = $('#itemEditForm');
         var id = $(btn).attr('data-id'), title = $(btn).attr('data-title'), description = $('btn').attr('data-description'), full = $(btn).attr('data-full'), parentid = $(btn).attr('data-parentid');
         form.find('input[name=id]').val(id);
-        form.find('input[name=full]').val(full);
+//        form.find('input[name=full]').val(full);
         form.find('input[name=title]').val(title);
         form.find('textarea[name=description]').val(description);
         form.find('select[name=parentid]').val(parentid);
