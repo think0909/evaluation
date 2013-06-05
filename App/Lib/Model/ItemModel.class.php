@@ -16,7 +16,7 @@ class ItemModel extends Model
     );
 
     protected $_auto = array(
-        array('full', 1)
+        array('full', 100)
     );
 
 
